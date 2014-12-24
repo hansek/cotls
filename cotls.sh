@@ -21,6 +21,9 @@ ACTION_DIR="${COTLS_DIR}/actions/"
 ACTION_SUFFIX=".sh"
 DEFAULT_CONFIG_NAME=".cotls"
 
+ARGUMENTS=("$@")
+ARGUMENTS_COUNT=${#ARGUMENTS[@]}
+
 
 ###############################################################################
 # HELPER FUNCTIONS
@@ -42,6 +45,7 @@ usage() {
     echo "* -prdb | --password-remote-db"
     echo "  Prompt user for password for remote DB"
 }
+
 
 log() {
     if [ -z "${2+x}" ]
@@ -66,14 +70,90 @@ log() {
     echo -e "${COLOR}[$(date +"%Y-%m-%d %H:%M:%S")]\e[0m $1"
 }
 
+
 loge() {
     log "$1" "loge"
     echo ""
     exit 1
 }
 
+
 logs() {
     log "$1" "success"
+}
+
+
+prepareAction() {
+    local ACTION=$1
+
+    # chose a behavior depends on action name
+    case ${ACTION} in
+
+        dumpdown|syncdown)
+            # actions without defined routines or validations
+        ;;
+
+
+        batch)
+            if [[ $ARGUMENTS_COUNT != 2 ]]; then
+                loge "Batch name not specified!"
+            fi
+
+            BATCH_NAME=${ARGUMENTS[1]}
+        ;;
+
+
+        ssh)
+            if [[ $ARGUMENTS_COUNT != 2 ]]; then
+                loge "SSH remote command not specified!"
+            fi
+
+            SSH_COMMAND=${ARGUMENTS[1]}
+        ;;
+
+
+        import)
+            if [[ $ARGUMENTS_COUNT != 2 ]]; then
+                loge "File to import not specified!"
+            fi
+
+            FILE_TO_IMPORT=${ARGUMENTS[1]}
+            DB_LOCAL_NAME=${ARGUMENTS[2]}
+            DB_LOCAL_USER=${ARGUMENTS[3]}
+        ;;
+
+
+        *)
+            loge "Unknown command!"
+        ;;
+    esac
+
+}
+
+
+callAction() {
+    local ACTION=$1
+
+    ACTION_FILE="${ACTION_DIR}${ACTION}${ACTION_SUFFIX}"
+
+    # check if action file exists
+    if [ ! -f ${ACTION_FILE} ]
+    then
+        loge "Action file \"${ACTION_FILE}\" not found!"
+        exit 1
+    else
+        source ${ACTION_FILE}
+
+        # run selected action
+        $ACTION
+
+        # get return content from action function
+        local RETURN=$?
+
+        # TODO resolve RETURN to success or error
+    fi
+
+    return $RETURN
 }
 
 
@@ -81,62 +161,22 @@ logs() {
 # ACTION CONTROL + VALIDATION
 
 # check arguments
-if [ $# -le 0 ]
+if [ $ARGUMENTS_COUNT -le 0 ]
 then
     usage
     exit 1
 fi
 
-ACTION=$1
+CLI_ACTION="${ARGUMENTS[0]}"
 
-# chose a behavior depends on action name
-case ${ACTION} in
-
-    dumpdown|syncdown)
-        # actions without defined routines or validations
-    ;;
-
-
-    batch)
-        if [[ "$#" != 2 ]]; then
-            loge "Batch name not specified!"
-        fi
-
-        BATCH_NAME=$2
-    ;;
-
-
-    ssh)
-        if [[ "$#" != 2 ]]; then
-            loge "SSH remote command not specified!"
-        fi
-
-        SSH_COMMAND=$2
-    ;;
-
-
-    import)
-        if [[ "$#" != 2 ]]; then
-            loge "File to import not specified!"
-        fi
-
-        FILE_TO_IMPORT=$2
-        DB_LOCAL_NAME=$3
-        DB_LOCAL_USER=$4
-    ;;
-
-
-    *)
-        loge "Unknown command!"
-    ;;
-esac
+prepareAction ${CLI_ACTION}
 
 
 ###############################################################################
 # ARGUMENTS CONTROL + VALIDATION
 
 # prepare arguments
-for i in "$@:2"
+for i in "${ARGUMENTS[@]:1}"
 do
     case $i in
 
@@ -177,7 +217,7 @@ fi
 # check if config exists
 if [ ! -f ${CONFIG_FILE} ]
 then
-    loge "Config file ${CONFIG_FILE} not found!"
+    loge "Config file \"${CONFIG_FILE}\" not found!"
     exit 1
 fi
 
@@ -188,23 +228,10 @@ source ${CONFIG_FILE}
 ###############################################################################
 # MAIN ACTION CODE
 
-ACTION_FILE="${ACTION_DIR}${ACTION}${ACTION_SUFFIX}"
+callAction ${CLI_ACTION}
 
-# check if action file exists
-if [ ! -f ${ACTION_FILE} ]
-then
-    loge "Action file \"${ACTION_FILE}\" not found!"
-    exit 1
-else
-    source ${ACTION_FILE}
+RETURN_VALUE=$?
 
-    # run selected action
-    $ACTION
-
-    # get return content from action function
-    RETURN_VALUE=$?
-
-    # TODO resolve RETURN_VALUE to success or error
-fi
+# TODO resolve RETURN_VALUE to success or error
 
 echo ""
