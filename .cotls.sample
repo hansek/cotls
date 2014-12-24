@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# SSH config
+SSH_USER=""
+SSH_SERVER=""
+
+# Local Database config
+DB_LOCAL_NAME=""
+DB_LOCAL_USER=""
+DB_LOCAL_PASS=""
+
+
+# Remote Database Config
+DB_REMOTE_NAME=""
+DB_REMOTE_USER=""
+DB_REMOTE_PASS=""
+
+DB_REMOTE_PARAMETERS=(
+    # "--no-data"
+)
+
+# RSync config
+RSYNC_PARAMETERS=(
+)
+
+RSYNC_REMOTE_ROOT_PATH="/var/www/project/"
+
+RSYNC_REMOTE_PATHS=(
+    "" # root of remote path
+)
+
+RSYNC_EXCLUDE_PATHS=(
+    "cache/*" # all files in cache folder under root of remote path
+)
+
+RSYNC_LOCAL_ROOT_PATH="./www/" # path to local project directory
+
+# Batch arrays
+
+BATCH_FULL=(
+    # "dumpdown"
+    # "syncdown"
+)
