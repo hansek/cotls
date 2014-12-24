@@ -12,6 +12,7 @@ Currently inlcudes easily configurable commands for:
 You can also make groups of commands (batch) and they can be run by one command.
 
 ## TODO
+- [x] refactor to modular action structure
 - [ ] rename commands to better equivalents
 - [ ] better logs
 - [ ] config validation (warn user if required variables are not set)
@@ -40,17 +41,17 @@ You can also make groups of commands (batch) and they can be run by one command.
 
 ## Install
 
-1. Download and put **cotls.sh** script somewhere (for eg. into your home directory)
+1. Download **cotls.sh** script and **actions/** dir and put them somewhere (for eg. into your home directory)
 2. Add execute permission
    `chmod +x ~/cotls.sh`
 3. Update your PATH or make alias in your **.bashrc** 
    `alias cotls="~/cotls.sh"`
-4. Put config file **.cotls** (make copy of **.cotls.sample**) to your project directory or desire location
+4. Put the config file **.cotls** (a copy of **.cotls.sample**) to your project directory or desire location
 5. Update variables in your config file
 6. Run command in your project directory
    `cotls syncdown`
 
-## Commands
+## Actions
 - **batch** - run defined batch operations (self commands) from config file
 - **dumpdown** - remotely dump mysql database to localhost over SSH
 - **syncdown** - rsync files from remote server to localhost over SSH

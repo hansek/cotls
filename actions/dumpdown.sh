@@ -1,0 +1,19 @@
+#!/bin/bash
+
+ACTION_NAME="dumpdown"
+ACTION_VERSION="2014-12-24"
+
+dumpdown() {
+    TARGET_FILENAME=${DB_REMOTE_NAME}${CONFIG_SUFFIX}.sql.gz
+
+    # prepare exclude statments
+    for i in "${!DB_REMOTE_IGNORED_TABLES[@]}"
+    do
+        DB_REMOTE_IGNORED_TABLES[i]="--ignore-table=${DB_REMOTE_NAME}.${DB_REMOTE_IGNORED_TABLES[i]}"
+    done
+
+    log "Dumping database ..."
+    ssh ${SSH_USER}@${SSH_SERVER} "mysqldump -u ${DB_REMOTE_USER} -p${DB_REMOTE_PASS} ${DB_REMOTE_IGNORED_TABLES[@]} ${DB_REMOTE_PARAMETERS[@]} ${DB_REMOTE_NAME} | gzip -c" > ${TARGET_FILENAME}
+
+    logs "Done, saved as \"${TARGET_FILENAME}\""
+}

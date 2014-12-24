@@ -10,14 +10,26 @@
 # - make alias in your .bashrc 
 #   alias cotls="~/cotls.sh"
 
+
+###############################################################################
+# MAIN VARIABLES
+
+COTLS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 CONFIG_SUFFIX=
+ACTION_DIR="${COTLS_DIR}/actions/"
+ACTION_SUFFIX=".sh"
 DEFAULT_CONFIG_NAME=".cotls"
+
+
+###############################################################################
+# HELPER FUNCTIONS
 
 # help message
 usage() {
     echo "Cotls - Condensed Tools [ 2014-12-24 ]"
     echo ""
-    echo "Commands:"
+    echo "Actions:"
     echo "* batch - call cotls command sets"
     echo "* dumpdown - dump database from remote host to localhost"
     echo "* syncdown - rsync data from remote host to localhost"
@@ -64,6 +76,10 @@ logs() {
     log "$1" "success"
 }
 
+
+###############################################################################
+# ACTION CONTROL + VALIDATION
+
 # check arguments
 if [ $# -le 0 ]
 then
@@ -71,38 +87,58 @@ then
     exit 1
 fi
 
+ACTION=$1
+
+# chose a behavior depends on action name
+case ${ACTION} in
+
+    dumpdown|syncdown)
+        # actions without defined routines or validations
+    ;;
+
+
+    batch)
+        if [[ "$#" != 2 ]]; then
+            loge "Batch name not specified!"
+        fi
+
+        BATCH_NAME=$2
+    ;;
+
+
+    ssh)
+        if [[ "$#" != 2 ]]; then
+            loge "SSH remote command not specified!"
+        fi
+
+        SSH_COMMAND=$2
+    ;;
+
+
+    import)
+        if [[ "$#" != 2 ]]; then
+            loge "File to import not specified!"
+        fi
+
+        FILE_TO_IMPORT=$2
+        DB_LOCAL_NAME=$3
+        DB_LOCAL_USER=$4
+    ;;
+
+
+    *)
+        loge "Unknown command!"
+    ;;
+esac
+
+
+###############################################################################
+# ARGUMENTS CONTROL + VALIDATION
+
 # prepare arguments
-for i in "$@"
+for i in "$@:2"
 do
     case $i in
-        # allowed actions
-        batch|dumpdown|syncdown|import)
-            ACTION=$i
-
-            case ${ACTION} in
-                batch)
-                    if [[ "$#" != 2 ]]; then
-                        loge "Batch name not specified!"
-                    fi
-
-                    BATCH_NAME=$2
-                ;;
-
-
-                import)
-                    if [[ "$#" != 2 ]]; then
-                        loge "File to import not specified!"
-                    fi
-
-                    FILE_TO_IMPORT=$2
-                    DB_LOCAL_NAME=$3
-                    DB_LOCAL_USER=$4
-                ;;
-            esac
-
-            shift
-        ;;
-
 
         # allowed arguments
         -c=*|--config=*)
@@ -124,6 +160,10 @@ do
     esac
 done
 
+
+###############################################################################
+# CONFIG FILE ROUTINE
+
 # prepare config file name
 CONFIG_FILE="`pwd`/${DEFAULT_CONFIG_NAME}"
 
@@ -141,103 +181,30 @@ then
     exit 1
 fi
 
-# load config data
+# load current config file data
 source ${CONFIG_FILE}
 
 
 ###############################################################################
-# MAIN CODE
+# MAIN ACTION CODE
 
-case ${ACTION} in
+ACTION_FILE="${ACTION_DIR}${ACTION}${ACTION_SUFFIX}"
 
-    batch)
-        BATCH_VAR="BATCH_${BATCH_NAME^^}"
-        BATCH_ARRAY="${BATCH_VAR}[@]"
+# check if action file exists
+if [ ! -f ${ACTION_FILE} ]
+then
+    loge "Action file \"${ACTION_FILE}\" not found!"
+    exit 1
+else
+    source ${ACTION_FILE}
 
-        if [ -z ${!BATCH_ARRAY+x} ]
-        then
-            loge "Batch variable \"${BATCH_VAR}\" not found in config file!"
-        fi
+    # run selected action
+    $ACTION
 
-        for i in "${!BATCH_ARRAY}"
-        do
-            log "Running: \"cotls ${i}\""
-            
-            # run command
-            $0 ${i}
-        done
-    ;;
+    # get return content from action function
+    RETURN_VALUE=$?
 
-
-    dumpdown)
-        TARGET_FILENAME=${DB_REMOTE_NAME}${CONFIG_SUFFIX}.sql.gz
-
-        # prepare exclude statments
-        for i in "${!DB_REMOTE_IGNORED_TABLES[@]}"
-        do
-            DB_REMOTE_IGNORED_TABLES[i]="--ignore-table=${DB_REMOTE_NAME}.${DB_REMOTE_IGNORED_TABLES[i]}"
-        done
-
-        log "Dumping database ..."
-        ssh ${SSH_USER}@${SSH_SERVER} "mysqldump -u ${DB_REMOTE_USER} -p${DB_REMOTE_PASS} ${DB_REMOTE_IGNORED_TABLES[@]} ${DB_REMOTE_PARAMETERS[@]} ${DB_REMOTE_NAME} | gzip -c" > ${TARGET_FILENAME}
-
-        logs "Done, saved as \"${TARGET_FILENAME}\""
-    ;;
-
-
-    syncdown)
-
-        # prepare exclude statments
-        for i in "${!RSYNC_EXCLUDE_PATHS[@]}"
-        do
-            RSYNC_EXCLUDE_PATHS[i]="--exclude=${RSYNC_EXCLUDE_PATHS[i]}"
-        done
-
-        # iterate over paths from config
-        for r_path in ${RSYNC_REMOTE_PATHS[*]}
-        do
-            log "Syncing remote \e[37;44m${r_path}\e[0m path to local path \e[37;44m$1${r_path}\e[0m"
-
-            rsync -rzvt --delete --perms --chmod=a+rwx "${RSYNC_EXCLUDE_PATHS[@]}" "${RSYNC_PARAMETERS[@]}" -e ssh ${SSH_USER}@${SSH_SERVER}:${RSYNC_REMOTE_ROOT_PATH}${r_path}/ ${RSYNC_LOCAL_ROOT_PATH}${r_path}
-
-            logs "Syncing remote \e[37;44m${r_path}\e[0m path finished"
-        done
-    ;;
-
-
-    import)
-        PASWORD=""
-
-        if [ ! -z ${DB_LOCAL_PASS+x} ]
-        then
-            PASSWORD="${PASSWORD}"
-        fi
-
-        log "Importing file \e[37;44m${FILE_TO_IMPORT}\e[0m into database \e[37;44m${DB_LOCAL_NAME}\e[0m"
-
-        # zip archive
-        if [[ ${FILE_TO_IMPORT} == *.zip ]]
-        then
-            unzip -p ${FILE_TO_IMPORT} | mysql -u ${DB_LOCAL_USER} ${DB_LOCAL_NAME}
-
-        # gzip archive
-        elif [[ ${FILE_TO_IMPORT} == *.gz ]]; then
-            gunzip < ${FILE_TO_IMPORT} | mysql -u ${DB_LOCAL_USER} ${PASSWORD} ${DB_LOCAL_NAME}
-
-        # raw sql
-        else
-            mysql -u ${DB_LOCAL_USER} ${PASSWORD} ${DB_LOCAL_NAME} < ${FILE_TO_IMPORT}
-        fi
-
-        logs "Import probably finished"
-    ;;
-
-
-    *)
-        loge "No valid command specified."
-        echo ""
-        usage
-    ;;
-esac
+    # TODO resolve RETURN_VALUE to success or error
+fi
 
 echo ""
