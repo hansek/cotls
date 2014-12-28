@@ -21,6 +21,8 @@ You can also make groups of commands (batch) and they can be run by one command.
 - [ ] multiple environment settings in only one config file (dev, staging, ...)
 - [ ] ability to define command parameters by cli arguments of cli prompt
 - [ ] improve usage / help text
+- [ ] commands autocompletion
+- [ ] commands parameters autocompletion
 
 ### New commands
   - [ ] dump - export database
