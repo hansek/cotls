@@ -36,5 +36,5 @@ fulldrop() {
     # TODO check if there was no mysql error
     RETURN=$(mysql -u ${DB_LOCAL_USER} ${PASSWORD} ${DB_LOCAL_NAME} -e "${DROP_TABLES_QUERY}")
 
-    logs "Done, all tables in  \"${DB_LOCAL_NAME}\" droped"
+    logs "Done, all tables in  \"${DB_LOCAL_NAME}\" dropped"
 }
