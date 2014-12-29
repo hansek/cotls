@@ -45,6 +45,9 @@ usage() {
     echo "  Defile custom config file suffix, default blank"
     echo "* -prdb | --password-remote-db"
     echo "  Prompt user for password for remote DB"
+    echo "* -modx | --modx | -modx=<path> | --modx=<path>"
+    echo "  Define relative path to MODX Revolution CORE folder on remote host"
+    echo "  Usable for \"dumpdown\" action"
 }
 
 
@@ -209,13 +212,13 @@ do
         ;;
 
         -modx|--modx|-modx=*|--modx=*)
-            REMOTE_MODX_ROOT="./"
+            REMOTE_MODX_CORE="./"
 
             RETURN=$(strindex $i "=")
 
             if [ $RETURN -ge 1 ]
             then
-                REMOTE_MODX_ROOT="${i#*=}"
+                REMOTE_MODX_CORE="${i#*=}"
             fi
 
             shift

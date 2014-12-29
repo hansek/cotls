@@ -3,6 +3,8 @@
 ACTION_NAME="dumpdown"
 ACTION_VERSION="2014-12-29"
 
+MODX_CONFIG_PATH="config/config.inc.php"
+
 dumpdown() {
 
     # prepare exclude statments
@@ -11,18 +13,23 @@ dumpdown() {
         DB_REMOTE_IGNORED_TABLES[i]="--ignore-table=${DB_REMOTE_NAME}.${DB_REMOTE_IGNORED_TABLES[i]}"
     done
 
-    if [ ! -z $REMOTE_MODX_ROOT ]
+    if [ ! -z $REMOTE_MODX_CORE ]
     then
-        log "Using Remote MODX Root \"$REMOTE_MODX_ROOT\""
+        log "Using Remote MODX CORE path \"$REMOTE_MODX_CORE\""
 
-        DB_REMOTE_USER=`ssh ${SSH_USER}@${SSH_SERVER} cat ${REMOTE_MODX_ROOT}core/config/config.inc.php | grep \\$database_user | cut -d \' -f 2`
-        DB_REMOTE_PASS=`ssh ${SSH_USER}@${SSH_SERVER} cat ${REMOTE_MODX_ROOT}core/config/config.inc.php | grep \\$database_password | cut -d \' -f 2`
-        DB_REMOTE_NAME=`ssh ${SSH_USER}@${SSH_SERVER} cat ${REMOTE_MODX_ROOT}core/config/config.inc.php | grep \\$dbase | cut -d \' -f 2`
+        if ssh -q ${SSH_USER}@${SSH_SERVER} [[ ! -f "${REMOTE_MODX_CORE}${MODX_CONFIG_PATH}" ]]
+        then
+            loge "MODX Revolution config.inc.php not found for remote CORE path \"${REMOTE_MODX_CORE}\""
+        fi
+
+        DB_REMOTE_USER=`ssh ${SSH_USER}@${SSH_SERVER} cat ${REMOTE_MODX_CORE}${MODX_CONFIG_PATH} | grep \\$database_user | cut -d \' -f 2`
+        DB_REMOTE_PASS=`ssh ${SSH_USER}@${SSH_SERVER} cat ${REMOTE_MODX_CORE}${MODX_CONFIG_PATH} | grep \\$database_password | cut -d \' -f 2`
+        DB_REMOTE_NAME=`ssh ${SSH_USER}@${SSH_SERVER} cat ${REMOTE_MODX_CORE}${MODX_CONFIG_PATH} | grep \\$dbase | cut -d \' -f 2`
     fi
 
     TARGET_FILENAME=${DB_REMOTE_NAME}${CONFIG_SUFFIX}.$(date +"%Y-%m-%d-%H%M").sql.gz
 
-    log "Dumping database ..."
+    log "Dumping database \"${DB_REMOTE_NAME}\""
     ssh ${SSH_USER}@${SSH_SERVER} "mysqldump -u ${DB_REMOTE_USER} -p${DB_REMOTE_PASS} ${DB_REMOTE_IGNORED_TABLES[@]} ${DB_REMOTE_PARAMETERS[@]} ${DB_REMOTE_NAME} | gzip -c" > ${TARGET_FILENAME}
 
     logs "Done, saved as \"${TARGET_FILENAME}\""

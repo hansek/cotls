@@ -58,6 +58,7 @@ You can also make groups of commands (batch) and they can be run by one command.
 - **dumpdown** - remotely dump mysql database to localhost over SSH
 - **syncdown** - rsync files from remote server to localhost over SSH
 - **import** - helper for import to local mysql database (can handle `*.sql`, `*.zip`, `*.gz` formats)
+- **fulldrop** - drop all tables in local mysql database
 
 
 ## Arguments
@@ -71,6 +72,12 @@ You can have more than one config files in your project directory e.g. **.cotls*
 
 Prompt user for remote database password to it havn't to be stored inside config file
 
+### MODX Revolution CORE path on remote host
+`-modx | --modx | -modx=<path> | --modx=<path>`
+
+Relative path to MODX Revolution CORE folder on remote host
+
+Default value for `-modx` and `--modx` arguments is **./**
 
 ## Examples
 Example commands to run in command line:
