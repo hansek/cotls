@@ -257,6 +257,8 @@ if [ ! -z ${CUSTOM_CONFIG+x} ]
 then
     CONFIG_SUFFIX=".${CUSTOM_CONFIG}"
     CONFIG_FILE+=${CONFIG_SUFFIX}
+
+    log "Using custom config file \"${DEFAULT_CONFIG_NAME}.${CUSTOM_CONFIG}\""
 fi
 
 # check if config exists
