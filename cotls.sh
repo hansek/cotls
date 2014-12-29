@@ -39,6 +39,7 @@ usage() {
     echo "* syncdown - rsync data from remote host to localhost"
     echo "* import - import dump file into database"
     echo "  Example: cotls import dump.sql dabatase_name database_user"
+    echo "* fulldrop - drop all tables for selected database in local mysql"
     echo ""
     echo "Arguments:"
     echo "* -c= | --config="
@@ -109,6 +110,11 @@ prepareAction() {
 
         dumpdown|syncdown)
             # actions without defined routines or validations
+        ;;
+
+
+        fulldrop)
+            # TODO pass user, pass, name from CLI
         ;;
 
 
