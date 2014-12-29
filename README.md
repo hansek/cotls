@@ -49,6 +49,9 @@ wget -qO- https://raw.githubusercontent.com/hansek/cotls/master/cotls-installer.
 
 
 ## Arguments
+### Version
+`-v | --version`
+
 ### Custom config filename suffix
 `-c=<suffix> | --config=<suffix>`
 

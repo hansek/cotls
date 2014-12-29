@@ -29,6 +29,10 @@ ARGUMENTS_COUNT=${#ARGUMENTS[@]}
 ###############################################################################
 # HELPER FUNCTIONS
 
+version() {
+    echo ${COTLS_VERSION}
+}
+
 # help message
 usage() {
     echo "Cotls - Condensed Tools [ ${COTLS_VERSION} ]"
@@ -182,25 +186,10 @@ callAction() {
 
 
 ###############################################################################
-# ACTION CONTROL + VALIDATION
-
-# check arguments
-if [ $ARGUMENTS_COUNT -le 0 ]
-then
-    usage
-    exit 1
-fi
-
-CLI_ACTION="${ARGUMENTS[0]}"
-
-prepareAction ${CLI_ACTION}
-
-
-###############################################################################
 # ARGUMENTS CONTROL + VALIDATION
 
 # prepare arguments
-for i in "${ARGUMENTS[@]:1}"
+for i in "${ARGUMENTS[@]}"
 do
     case $i in
 
@@ -212,6 +201,7 @@ do
 
 
         -prdb|--password-remote-db)
+            # TODO overide predefined value from config file
             read -s -p "Enter Password for Remote DB: " DB_REMOTE_PASS
             echo ""
             shift
@@ -230,11 +220,31 @@ do
             shift
         ;;
 
+        -v|--version)
+            version
+            exit
+        ;;
+
         *)
             # unknown option
         ;;
     esac
 done
+
+
+###############################################################################
+# ACTION CONTROL + VALIDATION
+
+# check arguments
+if [ $ARGUMENTS_COUNT -le 0 ]
+then
+    usage
+    exit 1
+fi
+
+CLI_ACTION="${ARGUMENTS[0]}"
+
+prepareAction ${CLI_ACTION}
 
 ###############################################################################
 # CONFIG FILE ROUTINE
