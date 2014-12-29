@@ -4,6 +4,10 @@
 SSH_USER=""
 SSH_SERVER=""
 
+# Project CMS/FW info
+PROJECT_CMS="drupal7" # drupal7 | wordpress | modx
+PROJECT_SETTINGS_FILE="sites/default/settings.php"
+
 # Local Database config
 DB_LOCAL_NAME=""
 DB_LOCAL_USER=""

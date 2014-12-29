@@ -3,7 +3,31 @@
 ACTION_NAME="dumpdown"
 ACTION_VERSION="2014-12-29"
 
-MODX_CONFIG_PATH="config/config.inc.php"
+
+modx() {
+    DB_REMOTE_USER=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep \\$database_user | cut -d \' -f 2`
+    DB_REMOTE_PASS=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep \\$database_password | cut -d \' -f 2`
+    DB_REMOTE_NAME=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep \\$dbase | cut -d \' -f 2`
+
+    # Evolution needs to trim backticks
+    DB_REMOTE_NAME=${DB_REMOTE_NAME#\`} # trim backtick from start of string
+    DB_REMOTE_NAME=${DB_REMOTE_NAME%\`} # trim backtick from end of string
+}
+
+
+drupal7() {
+    DB_REMOTE_USER=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep "      'username' =>" | cut -d ">" -f 2 | cut -d "'" -f 2`
+    DB_REMOTE_PASS=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep "      'password' =>" | cut -d ">" -f 2 | cut -d "'" -f 2`
+    DB_REMOTE_NAME=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep "      'database' =>" | cut -d ">" -f 2 | cut -d "'" -f 2`
+}
+
+
+wordpress() {
+    DB_REMOTE_USER=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep DB_USER | cut -d \' -f 4`
+    DB_REMOTE_PASS=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep DB_PASSWORD | cut -d \' -f 4`
+    DB_REMOTE_NAME=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep DB_NAME | cut -d \' -f 4`
+}
+
 
 dumpdown() {
 
@@ -13,20 +37,32 @@ dumpdown() {
         DB_REMOTE_IGNORED_TABLES[i]="--ignore-table=${DB_REMOTE_NAME}.${DB_REMOTE_IGNORED_TABLES[i]}"
     done
 
-    if [ ! -z $REMOTE_MODX_CORE ]
+    # get database config variables from config file for selected CMS/FW
+    if [ ! -z "${PROJECT_CMS}" ] && [ ! -z "${PROJECT_SETTINGS_FILE}" ]
     then
-        log "Using Remote MODX CORE path \"$REMOTE_MODX_CORE\""
+        # check if parsing function for selected CMS/FW exists
+        declare -f ${PROJECT_CMS} > /dev/null
 
-        if ssh -q ${SSH_USER}@${SSH_SERVER} [[ ! -f "${REMOTE_MODX_CORE}${MODX_CONFIG_PATH}" ]]
+        if [ $? -eq 1 ]
         then
-            loge "MODX Revolution config.inc.php not found for remote CORE path \"${REMOTE_MODX_CORE}\""
+            loge "Config parsing function for \"${PROJECT_CMS}\" not exists"
         fi
 
-        log "Loading remote database credentials from MODX Revolution config file"
+        log "Opening remote config file"
 
-        DB_REMOTE_USER=`ssh ${SSH_USER}@${SSH_SERVER} cat ${REMOTE_MODX_CORE}${MODX_CONFIG_PATH} | grep \\$database_user | cut -d \' -f 2`
-        DB_REMOTE_PASS=`ssh ${SSH_USER}@${SSH_SERVER} cat ${REMOTE_MODX_CORE}${MODX_CONFIG_PATH} | grep \\$database_password | cut -d \' -f 2`
-        DB_REMOTE_NAME=`ssh ${SSH_USER}@${SSH_SERVER} cat ${REMOTE_MODX_CORE}${MODX_CONFIG_PATH} | grep \\$dbase | cut -d \' -f 2`
+        if ssh -q ${SSH_USER}@${SSH_SERVER} [[ ! -f "${PROJECT_SETTINGS_FILE}" ]]
+        then
+            loge "Config file not found in location \"${PROJECT_SETTINGS_FILE}\""
+        fi
+
+        log "Loading remote database credentials"
+
+        # execute parsing function
+        ${PROJECT_CMS}
+
+        # debug print parsed variables
+        # echo $DB_REMOTE_NAME $DB_REMOTE_USER $DB_REMOTE_PASS
+        # exit
 
         logs "Done, loading of credentials complete"
     fi
