@@ -23,6 +23,9 @@ DB_REMOTE_PARAMETERS=(
     # "--no-data"
 )
 
+DB_REMOTE_IGNORED_TABLES=(
+)
+
 # RSync config
 RSYNC_PARAMETERS=(
 )
