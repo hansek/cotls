@@ -12,6 +12,23 @@ Currently inlcudes easily configurable commands for:
 You can also make groups of commands (batch) and they can be run by one command.
 
 ## Install
+### Automatic install with cURL or Wget
+Run in your command line
+
+**cURL**
+
+```
+curl https://raw.githubusercontent.com/hansek/cotls/master/cotls-installer.sh | bash
+```
+
+**Wget**
+
+```
+wget -qO- https://raw.githubusercontent.com/hansek/cotls/master/cotls-installer.sh | bash
+```
+
+
+### Manual install
 
 1. Download **cotls.sh** script and **actions/** dir and put them somewhere (for eg. into your home directory)
 2. Add execute permission
