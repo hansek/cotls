@@ -11,36 +11,6 @@ Currently inlcudes easily configurable commands for:
 
 You can also make groups of commands (batch) and they can be run by one command.
 
-## TODO
-- [x] refactor to modular action structure
-- [ ] rename commands to better equivalents
-- [ ] better logs
-- [ ] config validation (warn user if required variables are not set)
-- [ ] `--password` argument to load all password on script start by user prompt
-- [ ] better success / error handling for nested external commands (mysql_dump, mysql, rsync, ...)
-- [ ] multiple environment settings in only one config file (dev, staging, ...)
-- [ ] ability to define command parameters by cli arguments of cli prompt
-- [ ] improve usage / help text
-- [ ] commands autocompletion
-- [ ] commands parameters autocompletion
-
-### New commands
-  - [ ] dump - export database
-
-### Batch
-  - [ ] "one multidimension array" to config more groups
-  - [ ] ability to run external commands as batch item
-
-### Dumpdown
-  - [ ] unify with new **dump** command (use arguments for remote DB)
-  - [ ] remove compression from default behavior
-  - [ ] option to specify target folder for dumps (now in place of config file)
-
-### Syncdown
-  - [ ] make hardcoded arguments as just default values
-  - [ ] option to specify ignored directories / files for specific paths (now only globaly for all paths)
-  - [ ] improve password handling
-
 ## Install
 
 1. Download **cotls.sh** script and **actions/** dir and put them somewhere (for eg. into your home directory)
@@ -78,6 +48,39 @@ Prompt user for remote database password to it havn't to be stored inside config
 Relative path to MODX Revolution CORE folder on remote host
 
 Default value for `-modx` and `--modx` arguments is **./**
+
+
+## TODO
+- [x] refactor to modular action structure
+- [ ] rename commands to better equivalents
+- [ ] better logs
+- [ ] config validation (warn user if required variables are not set)
+- [ ] `--password` argument to load all password on script start by user prompt
+- [ ] better success / error handling for nested external commands (mysql_dump, mysql, rsync, ...)
+- [ ] multiple environment settings in only one config file (dev, staging, ...)
+- [ ] ability to define command parameters by cli arguments of cli prompt
+- [ ] improve usage / help text
+- [ ] commands autocompletion
+- [ ] commands parameters autocompletion
+
+### New commands
+  - [ ] dump - export database
+
+### Batch
+  - [ ] "one multidimension array" to config more groups
+  - [ ] ability to run external commands as batch item
+
+### Dumpdown
+  - [ ] unify with new **dump** command (use arguments for remote DB)
+  - [ ] remove compression from default behavior
+  - [ ] option to specify target folder for dumps (now in place of config file)
+
+### Syncdown
+  - [ ] make hardcoded arguments as just default values
+  - [ ] option to specify ignored directories / files for specific paths (now only globaly for all paths)
+  - [ ] improve password handling
+
+
 
 ## Examples
 Example commands to run in command line:
