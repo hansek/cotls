@@ -15,6 +15,7 @@
 # MAIN VARIABLES
 
 COTLS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+COTLS_VERSION="2014-12-29"
 
 CONFIG_SUFFIX=
 ACTION_DIR="${COTLS_DIR}/actions/"
@@ -30,7 +31,7 @@ ARGUMENTS_COUNT=${#ARGUMENTS[@]}
 
 # help message
 usage() {
-    echo "Cotls - Condensed Tools [ 2014-12-24 ]"
+    echo "Cotls - Condensed Tools [ ${COTLS_VERSION} ]"
     echo ""
     echo "Actions:"
     echo "* batch - call cotls command sets"
@@ -80,6 +81,20 @@ loge() {
 
 logs() {
     log "$1" "success"
+}
+
+
+strindex() {
+    x="${1%%$2*}"
+
+    if [[ $x = $1 ]]
+    then
+        POS=-1
+    else
+        POS=${#x}
+    fi
+
+    echo $POS
 }
 
 
@@ -193,13 +208,24 @@ do
             shift
         ;;
 
+        -modx|--modx|-modx=*|--modx=*)
+            REMOTE_MODX_ROOT="./"
+
+            RETURN=$(strindex $i "=")
+
+            if [ $RETURN -ge 1 ]
+            then
+                REMOTE_MODX_ROOT="${i#*=}"
+            fi
+
+            shift
+        ;;
 
         *)
             # unknown option
         ;;
     esac
 done
-
 
 ###############################################################################
 # CONFIG FILE ROUTINE
