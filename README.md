@@ -123,6 +123,6 @@ Example commands to run in command line:
 
 
 ## License
-Cotls is licensed under the [WTFPL license][wtfpl_license]
+All contents of this package are licensed under the [MIT license].
 
-[wtfpl_license]: http://www.wtfpl.net/
+[MIT license]: LICENSE

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright (c) 2015 Jan Tezner under the WTFPL license
+# Copyright (c) 2014 Jan Tezner under the MIT license
 
 # Condensed Tools for (Web) Developers
 #
