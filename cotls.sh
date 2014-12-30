@@ -185,6 +185,25 @@ callAction() {
 }
 
 
+checkSSHAccess() {
+    # check if ssh agent is running and has a loaded key
+    ssh-add -l >/dev/null 2>&1
+
+    if [ $? = 2 ]
+    then
+        # exit-status 2 = couldn't connect to ssh-agent
+        loge "SSH-AGENT not active, please start SSH-AGENT before continue!"
+    fi
+
+    # check if has access to remote server
+    ssh -q ${SSH_USER}@${SSH_SERVER} exit
+
+    if [ $? -ne 0 ]
+    then
+        loge "User don't have access to remote server over SSH"
+    fi
+}
+
 ###############################################################################
 # ARGUMENTS CONTROL + VALIDATION
 

@@ -4,6 +4,8 @@ ACTION_NAME="syncdown"
 ACTION_VERSION="2014-12-24"
 
 syncdown() {
+    checkSSHAccess
+
     # prepare exclude statments
     for i in "${!RSYNC_EXCLUDE_PATHS[@]}"
     do

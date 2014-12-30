@@ -30,6 +30,7 @@ wordpress() {
 
 
 dumpdown() {
+    checkSSHAccess
 
     # prepare exclude statments
     for i in "${!DB_REMOTE_IGNORED_TABLES[@]}"
