@@ -18,6 +18,7 @@ COTLS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 COTLS_VERSION="2014-12-29"
 
 CONFIG_SUFFIX=
+CONFIG_PATH=
 ACTION_DIR="${COTLS_DIR}/actions/"
 ACTION_SUFFIX=".sh"
 DEFAULT_CONFIG_NAME=".cotls"
@@ -219,6 +220,11 @@ do
         ;;
 
 
+        -cp=*)
+            CONFIG_PATH="${i#*=}"
+        ;;
+
+
         -prdb|--password-remote-db)
             # TODO overide predefined value from config file
             read -s -p "Enter Password for Remote DB: " DB_REMOTE_PASS
@@ -269,7 +275,7 @@ prepareAction ${CLI_ACTION}
 # CONFIG FILE ROUTINE
 
 # prepare config file name
-CONFIG_FILE="`pwd`/${DEFAULT_CONFIG_NAME}"
+CONFIG_FILE="${CONFIG_PATH}${DEFAULT_CONFIG_NAME}"
 
 # check if custom config name
 if [ ! -z ${CUSTOM_CONFIG+x} ]

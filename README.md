@@ -64,6 +64,13 @@ cp ./cotls_completion.sh /etc/bash_completion.d/cotls
 
 You can have more than one config files in your project directory e.g. **.cotls** (default without suffix), **.cotls.dev** (*dev* suffix), **.cotls.stage** (*stage* suffix), ...
 
+### Set path to config file
+`-cp=<path-to-config-file>`
+
+Path can be relative or absolute, default value is current directory.
+
+Allow to call Cotls outside of folder with config file
+
 ### CLI password prompt for remote DB
 `-prdb|--password-remote-db`
 
