@@ -8,6 +8,9 @@ SSH_SERVER=""
 PROJECT_CMS="drupal7" # drupal7 | wordpress | modx
 PROJECT_SETTINGS_FILE="sites/default/settings.php"
 
+# GIT config
+GIT_REMOTE_BRANCH="origin master"
+
 # Local Database config
 DB_LOCAL_NAME=""
 DB_LOCAL_USER=""

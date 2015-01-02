@@ -46,6 +46,7 @@ wget -qO- https://raw.githubusercontent.com/hansek/cotls/master/cotls-installer.
 - **syncdown** - rsync files from remote server to localhost over SSH
 - **import** - helper for import to local mysql database (can handle `*.sql`, `*.zip`, `*.gz` formats)
 - **fulldrop** - drop all tables in local mysql database
+- **deploy** - deploy of latest GIT commits from remote repository
 
 
 ## Completion install

@@ -45,6 +45,7 @@ usage() {
     echo "* import - import dump file into database"
     echo "  Example: cotls import dump.sql dabatase_name database_user"
     echo "* fulldrop - drop all tables for selected database in local mysql"
+    echo "* deploy - make a GIT deploy on remote server"
     echo ""
     echo "Arguments:"
     echo "* -c= | --config="
@@ -83,8 +84,12 @@ log() {
 
 loge() {
     log "$1" "loge"
-    echo ""
-    exit 1
+
+    if [ ! -z "${2+x}" ]
+    then
+        echo ""
+        exit 1
+    fi
 }
 
 
@@ -113,7 +118,7 @@ prepareAction() {
     # chose a behavior depends on action name
     case ${ACTION} in
 
-        dumpdown|syncdown)
+        dumpdown|syncdown|deploy)
             # actions without defined routines or validations
         ;;
 
