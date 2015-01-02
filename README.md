@@ -48,6 +48,13 @@ wget -qO- https://raw.githubusercontent.com/hansek/cotls/master/cotls-installer.
 - **fulldrop** - drop all tables in local mysql database
 
 
+## Completion install
+***Will be simplified later***
+
+```
+cp ./cotls_completion.sh /etc/bash_completion.d/cotls
+```
+
 ## Arguments
 ### Version
 `-v | --version`
@@ -80,8 +87,10 @@ Default value for `-modx` and `--modx` arguments is **./**
 - [ ] multiple environment settings in only one config file (dev, staging, ...)
 - [ ] ability to define command parameters by cli arguments of cli prompt
 - [ ] improve usage / help text
-- [ ] commands autocompletion
+- [x] commands autocompletion
 - [ ] commands parameters autocompletion
+- [ ] refactor script to contain completion (similar to [z.sh])
+- [ ] refactor script to be called as alias and have custom name (similar to [z.sh])
 
 ### New commands
   - [ ] dump - export database
@@ -126,3 +135,4 @@ Example commands to run in command line:
 All contents of this package are licensed under the [MIT license].
 
 [MIT license]: LICENSE
+[z.sh]: https://github.com/rupa/z
