@@ -78,13 +78,6 @@ Allow to call Cotls outside of folder with config file
 
 Prompt user for remote database password to it havn't to be stored inside config file
 
-#### MODX Revolution CORE path on remote host
-`-modx | -modx=<path>`
-
-Relative path to MODX Revolution CORE folder on remote host
-
-Default value for `-modx` and `--modx` arguments is **./**
-
 
 ## TODO
 - [x] refactor to modular action structure

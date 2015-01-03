@@ -26,6 +26,9 @@ DEFAULT_CONFIG_NAME=".cotls"
 ARGUMENTS=("$@")
 ARGUMENTS_COUNT=${#ARGUMENTS[@]}
 
+PROJECT_CMS=
+PROJECT_SETTINGS_FILE=
+
 
 ###############################################################################
 # HELPER FUNCTIONS
@@ -74,12 +77,6 @@ usage() {
     # -prdb
     echo -e "${VAR}-prdb${RST}"
     echo -e "   Prompt user for password for remote DB"
-
-    # -modx | -modx=<path>
-    echo -e "${VAR}-modx${RST} | ${VAR}-modx=${RST}${VAL}<path>${RST}"
-    echo -e "   ${HGL}DEPRECATED${RST} - will be replaced by CMS/FW option"
-    echo -e "   Set relative path to MODX Revolution CORE folder on remote host"
-    echo -e "   Usable for \"dumpdown\" action"
 
     echo -e ""
 }
@@ -136,6 +133,23 @@ strindex() {
     fi
 
     echo $POS
+}
+
+# http://stackoverflow.com/a/14367368
+# usage array_contains ARRAY $SEEK
+array_contains() {
+    local array="$1[@]"
+    local seeking=$2
+    local in=0
+
+    for element in "${!array}"; do
+        if [[ $element == $seeking ]]; then
+            in=1
+            break
+        fi
+    done
+
+    return $in
 }
 
 
@@ -264,23 +278,12 @@ do
             shift
         ;;
 
-        -modx|-modx=*)
-            REMOTE_MODX_CORE="./"
-
-            RETURN=$(strindex $i "=")
-
-            if [ $RETURN -ge 1 ]
-            then
-                REMOTE_MODX_CORE="${i#*=}"
-            fi
-
-            shift
-        ;;
 
         -v)
             version
             exit
         ;;
+
 
         *)
             # unknown option
