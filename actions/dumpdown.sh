@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ACTION_NAME="dumpdown"
-ACTION_VERSION="2014-12-29"
+ACTION_VERSION="2015-01-03"
 
 
 modx() {
@@ -74,7 +74,29 @@ dumpdown() {
         loge "At least one of username, password or database name of remote database is not set"
     fi
 
-    TARGET_FILENAME=${DB_REMOTE_NAME}${CONFIG_SUFFIX}.$(date +"%Y-%m-%d-%H%M").sql.gz
+    # if filename is set by argument
+    if [ ! -z "${CUSTOM_TARGET_FILENAME}" ]
+    then
+        TARGET_FILENAME="${CUSTOM_TARGET_FILENAME}"
+    fi
+
+    # prepare final filename
+    if [ -z "${TARGET_FILENAME}" ] && [ -z "${CUSTOM_TARGET_FILENAME}" ]
+    then
+        TARGET_FILENAME="${DB_REMOTE_NAME}${CONFIG_SUFFIX}.$(date +'%Y-%m-%d-%H%M').sql.gz"
+    else
+        # #date placeholder
+        TARGET_FILENAME=$(echo ${TARGET_FILENAME} | sed -e "s/#date/$(date +'%Y-%m-%d')/g")
+        # #time placeholder
+        TARGET_FILENAME=$(echo ${TARGET_FILENAME} | sed -e "s/#time/$(date +'%H%M')/g")
+        # #name placeholder
+        TARGET_FILENAME=$(echo ${TARGET_FILENAME} | sed -e "s/#name/${DB_REMOTE_NAME}/g")
+        # #suffix placeholder
+        TARGET_FILENAME=$(echo ${TARGET_FILENAME} | sed -e "s/#suffix/${CONFIG_SUFFIX}/g")
+
+        # add file extension
+        TARGET_FILENAME="${TARGET_FILENAME}.sql.gz"
+    fi
 
     log "Dumping database \"${DB_REMOTE_NAME}\""
     ssh ${SSH_USER}@${SSH_SERVER} "mysqldump -u ${DB_REMOTE_USER} -p${DB_REMOTE_PASS} ${DB_REMOTE_IGNORED_TABLES[@]} ${DB_REMOTE_PARAMETERS[@]} ${DB_REMOTE_NAME} | gzip -c" > ${TARGET_FILENAME}
