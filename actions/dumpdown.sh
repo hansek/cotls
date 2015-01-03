@@ -86,13 +86,13 @@ dumpdown() {
         TARGET_FILENAME="${DB_REMOTE_NAME}${CONFIG_SUFFIX}.$(date +'%Y-%m-%d-%H%M').sql.gz"
     else
         # #date placeholder
-        TARGET_FILENAME=$(echo ${TARGET_FILENAME} | sed -e "s/#date/$(date +'%Y-%m-%d')/g")
+        TARGET_FILENAME=$(sed -e "s/#date/$(date +'%Y-%m-%d')/g" <<< ${TARGET_FILENAME})
         # #time placeholder
-        TARGET_FILENAME=$(echo ${TARGET_FILENAME} | sed -e "s/#time/$(date +'%H%M')/g")
+        TARGET_FILENAME=$(sed -e "s/#time/$(date +'%H%M')/g" <<< ${TARGET_FILENAME})
         # #name placeholder
-        TARGET_FILENAME=$(echo ${TARGET_FILENAME} | sed -e "s/#name/${DB_REMOTE_NAME}/g")
+        TARGET_FILENAME=$(sed -e "s/#name/${DB_REMOTE_NAME}/g" <<< ${TARGET_FILENAME})
         # #suffix placeholder
-        TARGET_FILENAME=$(echo ${TARGET_FILENAME} | sed -e "s/#suffix/${CONFIG_SUFFIX}/g")
+        TARGET_FILENAME=$(sed -e "s/#suffix/${CONFIG_SUFFIX}/g" <<< ${TARGET_FILENAME})
 
         # add file extension
         TARGET_FILENAME="${TARGET_FILENAME}.sql.gz"
