@@ -47,6 +47,7 @@ wget -qO- https://raw.githubusercontent.com/hansek/cotls/master/cotls-installer.
 - **import** - helper for import to local mysql database (can handle `*.sql`, `*.zip`, `*.gz` formats)
 - **fulldrop** - drop all tables in local mysql database
 - **deploy** - deploy of latest GIT commits from remote repository
+- **self-update** - update COTLS to latest version from GitHub (only if installed as GIT repository)
 
 
 ## Completion install
@@ -117,7 +118,9 @@ Default value for `-modx` and `--modx` arguments is **./**
   - [ ] option to specify ignored directories / files for specific paths (now only globaly for all paths)
   - [ ] improve password handling
 
-
+### Self Update
+  - [ ] allow set update stream/branch (master/test/develop)
+  - [ ] option to update not only as GIT repository
 
 ## Examples
 Example commands to run in command line:

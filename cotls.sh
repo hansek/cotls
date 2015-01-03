@@ -118,7 +118,7 @@ prepareAction() {
     # chose a behavior depends on action name
     case ${ACTION} in
 
-        dumpdown|syncdown|deploy)
+        dumpdown|syncdown|deploy|self-update)
             # actions without defined routines or validations
         ;;
 

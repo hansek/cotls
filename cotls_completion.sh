@@ -6,7 +6,7 @@ _cotls_complete() {
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
 
-    opts="batch dumpdown syncdown import fulldrop deploy"
+    opts="batch dumpdown syncdown import fulldrop deploy self-update"
 
     if [[ ${cur} == * ]] ; then
         COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
