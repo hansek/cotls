@@ -82,10 +82,10 @@ usage() {
     echo -e "${VAR}-tf=${RST}${VAL}<target-filename>${RST}"
     echo -e "   Target filename, can contain relative or absolute path"
     echo -e "   Placeholders:"
-    echo -e "      #date - current date in mysql format (e.g. 2015-01-01)"
-    echo -e "      #time - current time in hours and minutes (e.g. 1000)"
-    echo -e "      #name - database name"
-    echo -e "      #suffix - config suffix if defined"
+    echo -e "      ${VAL}#date${RST} - current date in mysql format (e.g. 2015-01-01)"
+    echo -e "      ${VAL}#time${RST} - current time in hours and minutes (e.g. 1000)"
+    echo -e "      ${VAL}#name${RST} - database name"
+    echo -e "      ${VAL}#suffix${RST} - config suffix if defined"
 
     echo -e ""
 }
