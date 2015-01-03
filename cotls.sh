@@ -15,7 +15,7 @@
 # MAIN VARIABLES
 
 COTLS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-COTLS_VERSION="2014-12-29"
+COTLS_VERSION="2015-01-03"
 
 CONFIG_SUFFIX=
 CONFIG_PATH=
@@ -36,25 +36,52 @@ version() {
 
 # help message
 usage() {
-    echo "Cotls - Condensed Tools [ ${COTLS_VERSION} ]"
-    echo ""
-    echo "Actions:"
-    echo "* batch - call cotls command sets"
-    echo "* dumpdown - dump database from remote host to localhost"
-    echo "* syncdown - rsync data from remote host to localhost"
-    echo "* import - import dump file into database"
-    echo "  Example: cotls import dump.sql dabatase_name database_user"
-    echo "* fulldrop - drop all tables for selected database in local mysql"
-    echo "* deploy - make a GIT deploy on remote server"
-    echo ""
-    echo "Arguments:"
-    echo "* -c= | --config="
-    echo "  Defile custom config file suffix, default blank"
-    echo "* -prdb | --password-remote-db"
-    echo "  Prompt user for password for remote DB"
-    echo "* -modx | --modx | -modx=<path> | --modx=<path>"
-    echo "  Define relative path to MODX Revolution CORE folder on remote host"
-    echo "  Usable for \"dumpdown\" action"
+    # colors definition
+    RST="\e[0m" # reset
+    TIT="\e[32m" # title
+    VAR="\e[33m" # variable
+    VAL="\e[36m" # value
+    HGL="\e[31m" # highlight
+
+    echo -e "Cotls - Condensed Tools [ ${COTLS_VERSION} ]"
+
+    echo -e ""
+
+    echo -e "${TIT}Actions:${RST}"
+
+    echo -e "${VAR}batch${RST} - call cotls command sets"
+    echo -e "${VAR}dumpdown${RST} - dump database from remote host to localhost"
+    echo -e "${VAR}syncdown${RST} - rsync data from remote host to localhost"
+    echo -e "${VAR}import${RST} - import dump file into database"
+    echo -e "   Example: cotls import dump.sql dabatase_name database_user"
+    echo -e "${VAR}fulldrop${RST} - drop all tables for selected database in local mysql"
+    echo -e "${VAR}deploy${RST} - make a GIT deploy on remote server"
+
+    echo -e ""
+
+
+    echo -e "${TIT}Arguments:${RST}"
+
+    # -c=<config-suffix>
+    echo -e "${VAR}-c=${RST}${VAL}<config-suffix>${RST}"
+    echo -e "   Custom config file suffix, default blank (config file has name \"${DEFAULT_CONFIG_NAME}\") "
+    echo -e "   E.g. value \"dev\" supposed to config file has name \"${DEFAULT_CONFIG_NAME}.dev\")"
+
+    # -cp=<path-to-config-file>
+    echo -e "${VAR}-cp=${RST}${VAL}<path-to-config-file>${RST}"
+    echo -e "   Path can be relative or absolute, default value is current directory."
+
+    # -prdb
+    echo -e "${VAR}-prdb${RST}"
+    echo -e "   Prompt user for password for remote DB"
+
+    # -modx | -modx=<path>
+    echo -e "${VAR}-modx${RST} | ${VAR}-modx=${RST}${VAL}<path>${RST}"
+    echo -e "   ${HGL}DEPRECATED${RST} - will be replaced by CMS/FW option"
+    echo -e "   Set relative path to MODX Revolution CORE folder on remote host"
+    echo -e "   Usable for \"dumpdown\" action"
+
+    echo -e ""
 }
 
 
@@ -219,7 +246,7 @@ do
     case $i in
 
         # allowed arguments
-        -c=*|--config=*)
+        -c=*)
             CUSTOM_CONFIG="${i#*=}"
             shift
         ;;
@@ -230,14 +257,14 @@ do
         ;;
 
 
-        -prdb|--password-remote-db)
+        -prdb)
             # TODO overide predefined value from config file
             read -s -p "Enter Password for Remote DB: " DB_REMOTE_PASS
             echo ""
             shift
         ;;
 
-        -modx|--modx|-modx=*|--modx=*)
+        -modx|-modx=*)
             REMOTE_MODX_CORE="./"
 
             RETURN=$(strindex $i "=")
@@ -250,7 +277,7 @@ do
             shift
         ;;
 
-        -v|--version)
+        -v)
             version
             exit
         ;;

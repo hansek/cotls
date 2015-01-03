@@ -58,28 +58,28 @@ cp ./cotls_completion.sh /etc/bash_completion.d/cotls
 ```
 
 ## Arguments
-### Version
-`-v | --version`
+#### Version
+`-v`
 
-### Custom config filename suffix
-`-c=<suffix> | --config=<suffix>`
+#### Custom config filename suffix
+`-c=<config-suffix>`
 
 You can have more than one config files in your project directory e.g. **.cotls** (default without suffix), **.cotls.dev** (*dev* suffix), **.cotls.stage** (*stage* suffix), ...
 
-### Set path to config file
+#### Set path to config file
 `-cp=<path-to-config-file>`
 
 Path can be relative or absolute, default value is current directory.
 
 Allow to call Cotls outside of folder with config file
 
-### CLI password prompt for remote DB
-`-prdb|--password-remote-db`
+#### CLI password prompt for remote DB
+`-prdb`
 
 Prompt user for remote database password to it havn't to be stored inside config file
 
-### MODX Revolution CORE path on remote host
-`-modx | --modx | -modx=<path> | --modx=<path>`
+#### MODX Revolution CORE path on remote host
+`-modx | -modx=<path>`
 
 Relative path to MODX Revolution CORE folder on remote host
 
@@ -95,7 +95,7 @@ Default value for `-modx` and `--modx` arguments is **./**
 - [ ] better success / error handling for nested external commands (mysql_dump, mysql, rsync, ...)
 - [ ] multiple environment settings in only one config file (dev, staging, ...)
 - [ ] ability to define command parameters by cli arguments of cli prompt
-- [ ] improve usage / help text
+- [x] improve usage / help text
 - [x] commands autocompletion
 - [ ] commands parameters autocompletion
 - [ ] refactor script to contain completion (similar to [z.sh])
