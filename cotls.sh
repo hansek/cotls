@@ -85,7 +85,7 @@ log() {
 loge() {
     log "$1" "loge"
 
-    if [ ! -z "${2+x}" ]
+    if [ -z "${2+x}" ]
     then
         echo ""
         exit 1
