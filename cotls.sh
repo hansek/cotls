@@ -16,6 +16,7 @@
 
 COTLS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 COTLS_VERSION="2015-01-05"
+COTLS_HASH=
 
 CONFIG_SUFFIX=
 CONFIG_PATH=
@@ -34,7 +35,20 @@ PROJECT_SETTINGS_FILE=
 # HELPER FUNCTIONS
 
 version() {
-    echo ${COTLS_VERSION}
+    # check if is GIT root
+    if [[ -d "${COTLS_DIR}/.git" ]]
+    then
+        cd ${COTLS_DIR}
+
+        COTLS_HASH=$(git rev-parse --short HEAD)
+    fi
+
+    if [ -n "${COTLS_HASH}" ]
+    then
+        COTLS_HASH=" #${COTLS_HASH}"
+    fi
+
+    echo "${COTLS_VERSION}${COTLS_HASH}"
 }
 
 # help message
