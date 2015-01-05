@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ACTION_NAME="fulldrop"
-ACTION_VERSION="2014-12-29"
+ACTION_VERSION="2015-01-05"
 
 fulldrop() {
     PASWORD=""
