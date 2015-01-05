@@ -8,7 +8,7 @@ fulldrop() {
 
     if [ ! -z ${DB_LOCAL_PASS+x} ]
     then
-        PASSWORD="${PASSWORD}"
+        PASSWORD="${DB_LOCAL_PASS}"
     fi
 
     log "Droping all tables from database \"${DB_LOCAL_NAME}\""
