@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # Copyright (c) 2014 Jan Tezner under the MIT license
 
 # Condensed Tools for (Web) Developers
