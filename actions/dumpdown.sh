@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ACTION_NAME="dumpdown"
-ACTION_VERSION="2015-01-03"
+ACTION_VERSION="2015-01-05"
 
 
 modx() {
@@ -31,12 +31,6 @@ wordpress() {
 
 dumpdown() {
     checkSSHAccess
-
-    # prepare exclude statments
-    for i in "${!DB_REMOTE_IGNORED_TABLES[@]}"
-    do
-        DB_REMOTE_IGNORED_TABLES[i]="--ignore-table=${DB_REMOTE_NAME}.${DB_REMOTE_IGNORED_TABLES[i]}"
-    done
 
     # get database config variables from config file for selected CMS/FW
     if [ ! -z "${PROJECT_CMS}" ] && [ ! -z "${PROJECT_SETTINGS_FILE}" ]
@@ -73,6 +67,12 @@ dumpdown() {
     then
         loge "At least one of username, password or database name of remote database is not set"
     fi
+
+    # prepare exclude statments
+    for i in "${!DB_REMOTE_IGNORED_TABLES[@]}"
+    do
+        DB_REMOTE_IGNORED_TABLES[$i]="--ignore-table=${DB_REMOTE_NAME}.${DB_REMOTE_IGNORED_TABLES[$i]}"
+    done
 
     # if filename is set by argument
     if [ ! -z "${CUSTOM_TARGET_FILENAME}" ]
