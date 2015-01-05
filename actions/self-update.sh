@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ACTION_NAME="self-update"
-ACTION_VERSION="2015-01-03"
+ACTION_VERSION="2015-01-05"
 
 self-update() {
     log "Geting latest changes from GitHub"
@@ -16,12 +16,22 @@ self-update() {
 
     if [ "$(git status --porcelain | wc -l)" -ne 0 ]
     then
-        loge "COTLS repository is not clean, please clean it manually"
+        loge "Your local COTLS repository is not clean, please clean it manually, it's located in \"${COTLS_DIR}\""
     fi
 
-    log $(git fetch origin master)
+    log "Fetching data from remote repository..."
+    $(git fetch origin)
 
-    log $(git reset --hard origin/master)
+    COMMITS_COUNT=$(git rev-list HEAD...origin/master --count)
+
+    if [ ${COMMITS_COUNT} -ne 0 ]
+    then
+        log "You're ${COMMITS_COUNT} behind release, updating..."
+
+        log $(git reset --hard origin/master)
+    else
+        log "You're on latest commit"
+    fi
 
     logs "COTLS updated successfully"
 }
