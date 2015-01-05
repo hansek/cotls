@@ -8,7 +8,7 @@ import() {
 
     if [ ! -z ${DB_LOCAL_PASS+x} ]
     then
-        PASSWORD="-p${PASSWORD}"
+        PASSWORD="-p${DB_LOCAL_PASS}"
     fi
 
     log "Importing file \e[37;44m${FILE_TO_IMPORT}\e[0m into database \e[37;44m${DB_LOCAL_NAME}\e[0m"
