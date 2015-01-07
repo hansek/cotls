@@ -1,10 +1,13 @@
 #!/bin/bash
 
 ACTION_NAME="self-update"
-ACTION_VERSION="2015-01-05"
+ACTION_VERSION="2015-01-07"
 
 self-update() {
     log "Geting latest changes from GitHub"
+
+    VERSION=$(version)
+    log "Your version is ${VERSION}"
 
     cd ${COTLS_DIR}
 
@@ -32,6 +35,9 @@ self-update() {
     else
         log "You're on latest commit"
     fi
+
+    VERSION=$(version)
+    log "Your version is ${VERSION}"
 
     logs "COTLS updated successfully"
 }
