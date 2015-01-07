@@ -31,7 +31,7 @@ self-update() {
     then
         log "You're ${COMMITS_COUNT} behind release, updating..."
 
-        log $(git reset --hard origin/master)
+        $(git reset --hard origin/master)
     else
         log "You're on latest commit"
     fi
