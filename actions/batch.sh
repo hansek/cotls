@@ -1,10 +1,10 @@
 #!/bin/bash
 
 ACTION_NAME="batch"
-ACTION_VERSION="2014-12-24"
+ACTION_VERSION="2015-01-07"
 
 batch() {
-    BATCH_VAR="BATCH_${BATCH_NAME^^}"
+    BATCH_VAR="BATCH__${BATCH_NAME^^}"
     BATCH_ARRAY="${BATCH_VAR}[@]"
 
     if [ -z ${!BATCH_ARRAY+x} ]
