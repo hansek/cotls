@@ -32,7 +32,7 @@ self-update() {
     then
         log "You're ${COMMITS_COUNT} behind release, updating..."
 
-        $(git reset --hard origin/master)
+        RESPONSE=$(git reset --hard origin/master)
     else
         log "You're on latest commit"
     fi
@@ -50,7 +50,7 @@ self-update() {
 
         cp "${NEW_COMPLETION_FILE}" "${OLD_COMPLETION_FILE}"
 
-        log "- You should reload BASH completion file (execute \"source $OLD_COMPLETION_FILE\") to autocompletion work with latest version"
+        log "You should reload BASH completion file (execute \"source $OLD_COMPLETION_FILE\") to autocompletion work with latest version"
     fi
 
     # show current version
