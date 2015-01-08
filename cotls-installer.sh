@@ -2,6 +2,8 @@
 
 COTLS_ALIAS="cotls"
 
+SYSTEM_COMPLETION_DIR="/etc/bash_completion.d/"
+
 if [ -z "$INSTALL_PREFIX" ] ; then
     INSTALL_PREFIX=~/
 fi
@@ -47,6 +49,18 @@ case "$1" in
         if ! grep --quiet "$COTLS_ALIAS=" ~/.bashrc
         then
             echo -e "\nalias $COTLS_ALIAS='$INSTALL_PREFIX$REPO_NAME/$EXEC_FILES'" >> ~/.bashrc
+        fi
+
+        OLD_COMPLETION_FILE="$SYSTEM_COMPLETION_DIR$COTLS_ALIAS"
+        NEW_COMPLETION_FILE="$INSTALL_PREFIX$REPO_NAME/cotls_completion.sh"
+
+        $(cmp --silent "$OLD_COMPLETION_FILE" "$NEW_COMPLETION_FILE")
+        FILES_THE_SAME=$?
+
+        if [ -d "$SYSTEM_COMPLETION_DIR" ] && [ ! -f "$OLD_COMPLETION_FILE" -o "$FILES_THE_SAME" -ne 0 ]
+        then
+            echo "Installing BASH completion file to: $OLD_COMPLETION_FILE"
+            cp "$NEW_COMPLETION_FILE" "$OLD_COMPLETION_FILE"
         fi
 
         echo ""
