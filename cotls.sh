@@ -112,26 +112,41 @@ usage() {
 
 
 log() {
+    # colors definition
+    RST="\e[0m" # reset
+    SCS="\e[32m" # title
+    DEF="\e[33m" # default
+    ERR="\e[31m" # highlight
+
+    if [ -n "$1" ]
+    then
+        IN="$1"
+    else
+        read IN # This reads a string from stdin and stores it in a variable called IN
+    fi
+
     if [ -z "${2+x}" ]
     then
-        COLOR="\e[33m"
+        COLOR=${DEF}
     else 
         case "$2" in
             loge)
-                COLOR="\e[31m"
+                COLOR=${ERR}
             ;;
 
             success)
-                COLOR="\e[32m"
+                COLOR=${SCS}
             ;;
 
             *)
-                COLOR="\e[33m"
+                COLOR=${DEF}
             ;;
         esac
     fi
 
-    echo -e "${COLOR}[$(date +"%Y-%m-%d %H:%M:%S")]\e[0m $1"
+    DATETIME=$(date +"%Y-%m-%d %H:%M:%S")
+
+    echo -e "${COLOR}[${DATETIME}]${RST} ${IN}"
 }
 
 
