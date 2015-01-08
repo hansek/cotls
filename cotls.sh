@@ -33,6 +33,8 @@ PROJECT_SETTINGS_FILE=
 
 SYSTEM_COMPLETION_DIR="/etc/bash_completion.d/"
 
+SKIP_CONFIG=0
+
 ###############################################################################
 # HELPER FUNCTIONS
 
@@ -184,7 +186,7 @@ prepareAction() {
     # chose a behavior depends on action name
     case ${ACTION} in
 
-        dumpdown|syncdown|deploy|self-update)
+        dumpdown|syncdown|deploy)
             # actions without defined routines or validations
         ;;
 
@@ -209,6 +211,11 @@ prepareAction() {
             fi
 
             SSH_COMMAND=${ARGUMENTS[1]}
+        ;;
+
+
+        self-update)
+            SKIP_CONFIG=1
         ;;
 
 
@@ -339,27 +346,30 @@ prepareAction ${CLI_ACTION}
 ###############################################################################
 # CONFIG FILE ROUTINE
 
-# prepare config file name
-CONFIG_FILE="${CONFIG_PATH}${DEFAULT_CONFIG_NAME}"
-
-# check if custom config name
-if [ ! -z ${CUSTOM_CONFIG+x} ]
+if [ ${SKIP_CONFIG} -eq 0 ]
 then
-    CONFIG_SUFFIX=".${CUSTOM_CONFIG}"
-    CONFIG_FILE+=${CONFIG_SUFFIX}
+    # prepare config file name
+    CONFIG_FILE="${CONFIG_PATH}${DEFAULT_CONFIG_NAME}"
 
-    log "Using custom config file \"${DEFAULT_CONFIG_NAME}.${CUSTOM_CONFIG}\""
+    # check if custom config name
+    if [ ! -z ${CUSTOM_CONFIG+x} ]
+    then
+        CONFIG_SUFFIX=".${CUSTOM_CONFIG}"
+        CONFIG_FILE+=${CONFIG_SUFFIX}
+
+        log "Using custom config file \"${DEFAULT_CONFIG_NAME}.${CUSTOM_CONFIG}\""
+    fi
+
+    # check if config exists
+    if [ ! -f ${CONFIG_FILE} ]
+    then
+        loge "Config file \"${CONFIG_FILE}\" not found!"
+        exit 1
+    fi
+
+    # load current config file data
+    source ${CONFIG_FILE}
 fi
-
-# check if config exists
-if [ ! -f ${CONFIG_FILE} ]
-then
-    loge "Config file \"${CONFIG_FILE}\" not found!"
-    exit 1
-fi
-
-# load current config file data
-source ${CONFIG_FILE}
 
 
 ###############################################################################
