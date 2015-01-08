@@ -35,6 +35,8 @@ SYSTEM_COMPLETION_DIR="/etc/bash_completion.d/"
 
 SKIP_CONFIG=0
 
+DRY_RUN=false
+
 ###############################################################################
 # HELPER FUNCTIONS
 
@@ -313,6 +315,11 @@ do
             read -s -p "Enter Password for Remote DB: " DB_REMOTE_PASS
             echo ""
             shift
+        ;;
+
+
+        -n)
+            DRY_RUN=true
         ;;
 
 
