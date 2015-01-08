@@ -65,7 +65,8 @@ case "$1" in
 
         echo ""
         echo "COTLS installed successfully"
-        echo "- You should reload .bashrc (execute \"source ~/.bashrc\") first"
+        echo "- You should reload .bashrc (execute \"source ~/.bashrc\") to alias will be active"
+        echo "- You should reload BASH completion file (execute \"source $OLD_COMPLETION_FILE\") to autocompletion work"
         echo "- Voilà, use your new \"$COTLS_ALIAS\" command tool."
         echo ""
 

@@ -49,6 +49,8 @@ self-update() {
         log "Updating BASH completion file in: ${OLD_COMPLETION_FILE}"
 
         cp "${NEW_COMPLETION_FILE}" "${OLD_COMPLETION_FILE}"
+
+        log "- You should reload BASH completion file (execute \"source $OLD_COMPLETION_FILE\") to autocompletion work with latest version"
     fi
 
     # show current version
