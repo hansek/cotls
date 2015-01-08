@@ -15,11 +15,11 @@ syncdown() {
     fi
 
     # iterate over paths from config
-    for PATH in ${RSYNC_REMOTE_PATHS[*]}
+    for REMOTE_PATH in ${RSYNC_REMOTE_PATHS[*]}
     do
         local RSYNC_EXCLUDES=()
 
-        local VAR_SUFFIX=${PATH^^}
+        local VAR_SUFFIX=${REMOTE_PATH^^}
         VAR_SUFFIX=${VAR_SUFFIX//\/}
 
         local EXCLUDE_VAR="RSYNC_EXCLUDE__${VAR_SUFFIX}"
@@ -37,17 +37,20 @@ syncdown() {
         # check local files, if exist add to exclude
         for item in "${!FORCE_ARRAY}"
         do
-            if [ -f "${RSYNC_LOCAL_ROOT_PATH}${PATH}${item}" ]
+            if [ -f "${RSYNC_LOCAL_ROOT_PATH}${REMOTE_PATH}${item}" ]
             then
                 log "Local file \"${item}\" will be skipped and not synced"
+
                 RSYNC_EXCLUDES+=("--exclude=${item}")
             fi
         done
 
-        log "Syncing remote \e[37;44m${PATH}\e[0m path to local path \e[37;44m$1${PATH}\e[0m"
+        log "Syncing remote \e[37;44m${REMOTE_PATH}\e[0m path to local path \e[37;44m$1${REMOTE_PATH}\e[0m"
 
-        rsync -rzvt --delete --perms --chmod=a+rwx ${RSYNC_DRY_RUN} "${RSYNC_EXCLUDES[@]}" "${RSYNC_PARAMETERS[@]}" -e ssh ${SSH_USER}@${SSH_SERVER}:${RSYNC_REMOTE_ROOT_PATH}${PATH}/ ${RSYNC_LOCAL_ROOT_PATH}${PATH}
+        rsync -rzvt --delete --perms --chmod=a+rwx ${RSYNC_DRY_RUN} "${RSYNC_EXCLUDES[@]}" "${RSYNC_PARAMETERS[@]}" -e ssh ${SSH_USER}@${SSH_SERVER}:${RSYNC_REMOTE_ROOT_PATH}${REMOTE_PATH}/ ${RSYNC_LOCAL_ROOT_PATH}${REMOTE_PATH}
 
-        logs "Syncing remote \e[37;44m${PATH}\e[0m path finished"
+        logs "Syncing remote \e[37;44m${REMOTE_PATH}\e[0m path finished"
+
+        echo ""
     done
 }
