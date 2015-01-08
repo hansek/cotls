@@ -1,11 +1,12 @@
 #!/bin/bash
 
 ACTION_NAME="self-update"
-ACTION_VERSION="2015-01-07"
+ACTION_VERSION="2015-01-08"
 
 self-update() {
     log "Geting latest changes from GitHub"
 
+    # show current version
     VERSION=$(version)
     log "Your version is ${VERSION}"
 
@@ -36,6 +37,21 @@ self-update() {
         log "You're on latest commit"
     fi
 
+    # check if user have the latest completion file
+    OLD_COMPLETION_FILE="${SYSTEM_COMPLETION_DIR}${COTLS_ALIAS}"
+    NEW_COMPLETION_FILE="${COTLS_DIR}/cotls_completion.sh"
+
+    $(cmp --silent "${OLD_COMPLETION_FILE}" "${NEW_COMPLETION_FILE}")
+    FILES_THE_SAME=$?
+
+    if [ -d "${SYSTEM_COMPLETION_DIR}" ] && [ ! -f "${OLD_COMPLETION_FILE}" -o "${FILES_THE_SAME}" -ne 0 ]
+    then
+        log "Updating BASH completion file in: ${OLD_COMPLETION_FILE}"
+
+        cp "${NEW_COMPLETION_FILE}" "${OLD_COMPLETION_FILE}"
+    fi
+
+    # show current version
     VERSION=$(version)
     log "Your version is ${VERSION}"
 

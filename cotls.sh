@@ -14,8 +14,9 @@
 ###############################################################################
 # MAIN VARIABLES
 
+COTLS_ALIAS="cotls"
 COTLS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-COTLS_VERSION="2015-01-07"
+COTLS_VERSION="2015-01-08"
 COTLS_HASH=
 
 CONFIG_SUFFIX=
@@ -30,6 +31,7 @@ ARGUMENTS_COUNT=${#ARGUMENTS[@]}
 PROJECT_CMS=
 PROJECT_SETTINGS_FILE=
 
+SYSTEM_COMPLETION_DIR="/etc/bash_completion.d/"
 
 ###############################################################################
 # HELPER FUNCTIONS
