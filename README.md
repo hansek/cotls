@@ -80,7 +80,6 @@ Prompt user for remote database password to it havn't to be stored inside config
 
 
 ## TODO
-- [x] refactor to modular action structure
 - [ ] rename commands to better equivalents
 - [ ] better logs
 - [ ] config validation (warn user if required variables are not set)
@@ -88,8 +87,6 @@ Prompt user for remote database password to it havn't to be stored inside config
 - [ ] better success / error handling for nested external commands (mysql_dump, mysql, rsync, ...)
 - [ ] multiple environment settings in only one config file (dev, staging, ...)
 - [ ] ability to define command parameters by cli arguments of cli prompt
-- [x] improve usage / help text
-- [x] commands autocompletion
 - [ ] commands parameters autocompletion
 - [ ] refactor script to contain completion (similar to [z.sh])
 - [ ] refactor script to be called as alias and have custom name (similar to [z.sh])
@@ -98,17 +95,14 @@ Prompt user for remote database password to it havn't to be stored inside config
   - [ ] dump - export database
 
 ### Batch
-  - [ ] "one multidimension array" to config more groups
   - [ ] ability to run external commands as batch item
 
 ### Dumpdown
   - [ ] unify with new **dump** command (use arguments for remote DB)
   - [ ] remove compression from default behavior
-  - [ ] option to specify target folder for dumps (now in place of config file)
 
 ### Syncdown
   - [ ] make hardcoded arguments as just default values
-  - [ ] option to specify ignored directories / files for specific paths (now only globaly for all paths)
   - [ ] improve password handling
 
 ### Self Update
