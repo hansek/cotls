@@ -14,12 +14,6 @@ syncdown() {
         RSYNC_DRY_RUN="--dry-run"
     fi
 
-    # prepare exclude statments
-    for i in "${!RSYNC_EXCLUDE_PATHS[@]}"
-    do
-        RSYNC_EXCLUDE_PATHS[i]="--exclude=${RSYNC_EXCLUDE_PATHS[i]}"
-    done
-
     # iterate over paths from config
     for r_path in ${RSYNC_REMOTE_PATHS[*]}
     do
