@@ -12,13 +12,13 @@ Run in your command line
 
 **cURL**
 
-```
+```bash
 curl https://raw.githubusercontent.com/hansek/cotls/master/cotls-installer.sh | bash
 ```
 
 **Wget**
 
-```
+```bash
 wget -qO- https://raw.githubusercontent.com/hansek/cotls/master/cotls-installer.sh | bash
 ```
 
@@ -49,7 +49,7 @@ wget -qO- https://raw.githubusercontent.com/hansek/cotls/master/cotls-installer.
 ## Completion install
 ***Will be simplified later***
 
-```
+```bash
 cp ./cotls_completion.sh /etc/bash_completion.d/cotls
 ```
 
@@ -86,7 +86,7 @@ Prompt user for remote database password to it havn't to be stored inside config
 ### Basic configs
 
 #### dumpdown - Remote DB dump to localhost
-```
+```bash
 SSH_USER="user"
 SSH_SERVER="server.example.com"
 
@@ -113,7 +113,7 @@ CUSTOM_TARGET_FILENAME="dump"
 ```
 
 #### fulldrop - drop all tables in database on localhost
-```
+```bash
 DB_LOCAL_NAME="my_project_local"
 DB_LOCAL_USER="root"
 DB_LOCAL_PASS="root"
@@ -121,7 +121,7 @@ DB_LOCAL_PASS="root"
 
 
 #### import - import database dump into local database
-```
+```bash
 DB_LOCAL_NAME="my_project_local"
 DB_LOCAL_USER="root"
 DB_LOCAL_PASS="root"
@@ -131,7 +131,7 @@ FILE_TO_IMPORT="dump"
 
 
 #### syncdown - sync local media with remote host
-```
+```bash
 SSH_USER="user"
 SSH_SERVER="server.example.com"
 
@@ -157,7 +157,7 @@ RSYNC_FORCE_LOCAL__WWW=(
 
 
 #### rechmod - re-aplly 777 on certain directories/files on localhost
-```
+```bash
 PROJECT_LOCAL_ROOT="www/"
 
 CHMOD_PATHS_WRITE=(
@@ -168,7 +168,7 @@ CHMOD_PATHS_WRITE=(
 
 
 #### deploy - reset remote GIT repository to latest commit
-```
+```bash
 SSH_USER="user"
 SSH_SERVER="server.example.com"
 
@@ -178,7 +178,7 @@ PROJECT_REMOTE_GIT_BRANCH="origin master"
 
 
 #### batch - definition of batch commands sets
-```
+```bash
 # you have to have config variables for each command set ;)
 
 BATCH__FULL=(
