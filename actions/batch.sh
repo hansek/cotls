@@ -21,6 +21,10 @@ batch() {
         # run command
         $0 ${i}
 
-        echo $?
+        if [ $? -eq 1 ]
+        then
+            echo ""
+            loge "There is a issue with last command, before continue please fix the issue!"
+        fi
     done
 }
