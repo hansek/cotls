@@ -7,7 +7,9 @@ batch() {
     BATCH_VAR="BATCH__${BATCH_NAME^^}"
     BATCH_ARRAY="${BATCH_VAR}[@]"
 
-    if [ -z "${!BATCH_ARRAY+x}" ] || [ -z "${!BATCH_ARRAY}" ]
+    # TODO update check to correctly check if not empty, now this syntax has problem with existing and not empty var
+#    if [ -z "${!BATCH_ARRAY+x}" ] || [ -z "${!BATCH_ARRAY}" ]
+    if [ -z "${!BATCH_ARRAY+x}" ]
     then
         loge "Batch variable \"${BATCH_VAR}\" not found in config file or is empty!"
     fi
@@ -18,5 +20,7 @@ batch() {
 
         # run command
         $0 ${i}
+
+        echo $?
     done
 }
