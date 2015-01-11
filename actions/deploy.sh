@@ -1,13 +1,13 @@
 #!/bin/bash
 
 ACTION_NAME="deploy"
-ACTION_VERSION="2015-01-02"
+ACTION_VERSION="2015-01-11"
 
 deploy() {
     checkSSHAccess
 
     # check if is GIT root
-    if ssh ${SSH_USER}@${SSH_SERVER} [[ ! -d "${PROJECT_GIT_ROOT}.git" ]]
+    if ssh ${SSH_USER}@${SSH_SERVER} [[ ! -d "${PROJECT_REMOTE_GIT_ROOT}.git" ]]
     then
         loge "Not a GIT repository"
     fi
@@ -17,7 +17,7 @@ deploy() {
     IS_DIRTY=0
 
     # Get number of files added to the index (but uncommitted)
-    RESPONSE=$(ssh ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_GIT_ROOT}; git diff-index --cached HEAD | grep \"^M\" | wc -l)")
+    RESPONSE=$(ssh ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_REMOTE_GIT_ROOT}; git diff-index --cached HEAD | grep \"^M\" | wc -l)")
 
     if [[ ${RESPONSE} -ne "0" ]]
     then
@@ -29,7 +29,7 @@ deploy() {
     fi
 
     # Get number of tracked and changed files in working directory
-    RESPONSE=$(ssh ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_GIT_ROOT}; git diff-files | wc -l)")
+    RESPONSE=$(ssh ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_REMOTE_GIT_ROOT}; git diff-files | wc -l)")
 
     if [[ ${RESPONSE} -ne "0" ]]
     then
@@ -41,7 +41,7 @@ deploy() {
     fi
 
     # Get number of untracked files
-    RESPONSE=$(ssh ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_GIT_ROOT}; git ls-files --exclude-standard --others 2>/dev/null | wc -l)")
+    RESPONSE=$(ssh ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_REMOTE_GIT_ROOT}; git ls-files --exclude-standard --others 2>/dev/null | wc -l)")
 
     if  [[ ${RESPONSE} -ne 0 ]]
     then
@@ -62,12 +62,12 @@ deploy() {
     fi
 
     log "Fetching from \"${GIT_REMOTE_BRANCH}\""
-    ssh -A ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_GIT_ROOT}; git fetch ${GIT_REMOTE_BRANCH})"
+    ssh -A ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_REMOTE_GIT_ROOT}; git fetch ${GIT_REMOTE_BRANCH})"
 
     # TODO check if there are changes after fetch
 
     log "Deploying latest commits"
-    ssh -A ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_GIT_ROOT}; git reset --hard ${GIT_REMOTE_BRANCH/ /\/})"
+    ssh -A ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_REMOTE_GIT_ROOT}; git reset --hard ${GIT_REMOTE_BRANCH/ /\/})"
 
     logs "Deployed sucessfully"
 }
