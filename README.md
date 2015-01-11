@@ -47,6 +47,7 @@ wget -qO- https://raw.githubusercontent.com/hansek/cotls/master/cotls-installer.
 - **import** - helper for import to local mysql database (can handle `*.sql`, `*.zip`, `*.gz` formats)
 - **fulldrop** - drop all tables in local mysql database
 - **deploy** - deploy of latest GIT commits from remote repository
+- **rechmod** - apply correct access rights for directories/files on localhost
 - **self-update** - update COTLS to latest version from GitHub (only if installed as GIT repository)
 
 

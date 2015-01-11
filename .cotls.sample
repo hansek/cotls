@@ -7,6 +7,7 @@ SSH_SERVER=""
 # Project CMS/FW info
 PROJECT_CMS="drupal7" # drupal7 | wordpress | modx
 PROJECT_SETTINGS_FILE="sites/default/settings.php"
+PROJECT_LOCAL_ROOT="www/" # path to local project directory
 
 # GIT config
 GIT_REMOTE_BRANCH="origin master"
@@ -42,8 +43,6 @@ RSYNC_REMOTE_PATHS=(
 RSYNC_EXCLUDE_PATHS=(
     "cache/*" # all files in cache folder under root of remote path
 )
-
-RSYNC_LOCAL_ROOT_PATH="./www/" # path to local project directory
 
 # Batch arrays
 

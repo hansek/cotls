@@ -79,6 +79,7 @@ usage() {
     echo -e "   Example: cotls import dump.sql dabatase_name database_user"
     echo -e "${VAR}fulldrop${RST} - drop all tables for selected database in local mysql"
     echo -e "${VAR}deploy${RST} - make a GIT deploy on remote server"
+    echo -e "${VAR}rechmod${RST} - apply file mode to defined directories/files"
     echo -e "${VAR}self-update${RST} - update COTLS it self from GIT"
 
     echo -e ""
@@ -118,6 +119,8 @@ log() {
     SCS="\e[32m" # title
     DEF="\e[33m" # default
     ERR="\e[31m" # highlight
+    DEP="\e[31m" # deprecated
+    MSG=
 
     if [ -n "$1" ]
     then
@@ -131,7 +134,12 @@ log() {
         COLOR=${DEF}
     else 
         case "$2" in
-            loge)
+            deprecated)
+                COLOR=${DEP}
+                MSG=${DEF}
+            ;;
+
+            error)
                 COLOR=${ERR}
             ;;
 
@@ -147,12 +155,12 @@ log() {
 
     DATETIME=$(date +"%Y-%m-%d %H:%M:%S")
 
-    echo -e "${COLOR}[${DATETIME}]${RST} ${IN}"
+    echo -e "${COLOR}[${DATETIME}]${RST} ${MSG}${IN}"
 }
 
 
 loge() {
-    log "$1" "loge"
+    log "$1" "error"
 
     if [ -z "${2+x}" ]
     then
@@ -164,6 +172,11 @@ loge() {
 
 logs() {
     log "$1" "success"
+}
+
+
+logd() {
+    log "$1" "deprecated"
 }
 
 
@@ -204,7 +217,7 @@ prepareAction() {
     # chose a behavior depends on action name
     case ${ACTION} in
 
-        dumpdown|syncdown|deploy)
+        dumpdown|syncdown|deploy|rechmod)
             # actions without defined routines or validations
         ;;
 
@@ -394,6 +407,23 @@ then
     source ${CONFIG_FILE}
 fi
 
+
+###############################################################################
+# DEPRECATIONS
+
+# TODO 2015-02-01 remove
+if [ ! -z "${RSYNC_LOCAL_ROOT_PATH+x}" ]
+then
+    logd "DEPRECATED usage of \"RSYNC_LOCAL_ROOT_PATH\" in your config, please change variable name to \"PROJECT_LOCAL_ROOT\" (old will be removed on end of january)"
+
+    if [ -z "${PROJECT_LOCAL_ROOT}" ]
+    then
+        logd "\"PROJECT_LOCAL_ROOT\" not defined, using value of \"RSYNC_LOCAL_ROOT_PATH\""
+
+        PROJECT_LOCAL_ROOT="${RSYNC_LOCAL_ROOT_PATH}"
+    fi
+
+fi
 
 ###############################################################################
 # MAIN ACTION CODE
