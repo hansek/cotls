@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ACTION_NAME="dumpdown"
-ACTION_VERSION="2015-01-05"
+ACTION_VERSION="2015-01-11"
 
 
 modx() {
@@ -33,7 +33,7 @@ dumpdown() {
     checkSSHAccess
 
     # get database config variables from config file for selected CMS/FW
-    if [ ! -z "${PROJECT_CMS}" ] && [ ! -z "${PROJECT_SETTINGS_FILE}" ]
+    if [ ! -z "${PROJECT_CMS+x}" ] && [ ! -z "${PROJECT_CMS}" ] && [ ! -z "${PROJECT_SETTINGS_FILE+x}" ] && [ ! -z "${PROJECT_SETTINGS_FILE}" ]
     then
         # check if parsing function for selected CMS/FW exists
         declare -f ${PROJECT_CMS} > /dev/null
@@ -75,7 +75,7 @@ dumpdown() {
     done
 
     # if filename is set by argument
-    if [ ! -z "${CUSTOM_TARGET_FILENAME}" ]
+    if [ ! -z "${CUSTOM_TARGET_FILENAME+x}" ] && [ ! -z "${CUSTOM_TARGET_FILENAME}" ]
     then
         TARGET_FILENAME="${CUSTOM_TARGET_FILENAME}"
     fi

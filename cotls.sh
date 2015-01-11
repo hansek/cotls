@@ -16,7 +16,7 @@
 
 COTLS_ALIAS="cotls"
 COTLS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-COTLS_VERSION="2015-01-08"
+COTLS_VERSION="2015-01-11"
 COTLS_HASH=
 
 CONFIG_SUFFIX=
@@ -374,7 +374,7 @@ then
     CONFIG_FILE="${CONFIG_PATH}${DEFAULT_CONFIG_NAME}"
 
     # check if custom config name
-    if [ ! -z ${CUSTOM_CONFIG+x} ]
+    if [ ! -z "${CUSTOM_CONFIG+x}" ] && [ ! -z "${CUSTOM_CONFIG}" ]
     then
         CONFIG_SUFFIX=".${CUSTOM_CONFIG}"
         CONFIG_FILE+=${CONFIG_SUFFIX}

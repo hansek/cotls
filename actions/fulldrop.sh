@@ -1,12 +1,12 @@
 #!/bin/bash
 
 ACTION_NAME="fulldrop"
-ACTION_VERSION="2015-01-05"
+ACTION_VERSION="2015-01-11"
 
 fulldrop() {
     PASWORD=""
 
-    if [ ! -z ${DB_LOCAL_PASS+x} ]
+    if [ ! -z "${DB_LOCAL_PASS+x}" ] && [ ! -z "${DB_LOCAL_PASS}" ]
     then
         PASSWORD="-p${DB_LOCAL_PASS}"
     fi
