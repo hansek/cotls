@@ -61,13 +61,13 @@ deploy() {
         exit 1
     fi
 
-    log "Fetching from \"${GIT_REMOTE_BRANCH}\""
-    ssh -A ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_REMOTE_GIT_ROOT}; git fetch ${GIT_REMOTE_BRANCH})"
+    log "Fetching from \"${PROJECT_REMOTE_GIT_BRANCH}\""
+    ssh -A ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_REMOTE_GIT_ROOT}; git fetch ${PROJECT_REMOTE_GIT_BRANCH})"
 
     # TODO check if there are changes after fetch
 
     log "Deploying latest commits"
-    ssh -A ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_REMOTE_GIT_ROOT}; git reset --hard ${GIT_REMOTE_BRANCH/ /\/})"
+    ssh -A ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_REMOTE_GIT_ROOT}; git reset --hard ${PROJECT_REMOTE_GIT_BRANCH/ /\/})"
 
     logs "Deployed sucessfully"
 }
