@@ -1,52 +1,59 @@
 #!/bin/bash
 
 # SSH config
-SSH_USER=""
-SSH_SERVER=""
+SSH_USER="user"
+SSH_SERVER="server.example.com"
 
 # Project CMS/FW info
 PROJECT_CMS="drupal7" # drupal7 | wordpress | modx
 PROJECT_SETTINGS_FILE="sites/default/settings.php"
 PROJECT_LOCAL_ROOT="www/" # path to local project directory
 
-# GIT config
-GIT_REMOTE_BRANCH="origin master"
+PROJECT_REMOTE_GIT_ROOT="httpdocs/"
+PROJECT_REMOTE_GIT_BRANCH="origin master"
 
 # Local Database config
-DB_LOCAL_NAME=""
-DB_LOCAL_USER=""
-DB_LOCAL_PASS=""
+DB_LOCAL_NAME="my_project_local"
+DB_LOCAL_USER="root"
+DB_LOCAL_PASS="root"
 
 
 # Remote Database Config
-DB_REMOTE_NAME=""
-DB_REMOTE_USER=""
-DB_REMOTE_PASS=""
+DB_REMOTE_NAME="my_project"
+DB_REMOTE_USER="project_user"
+DB_REMOTE_PASS="password"
 
 DB_REMOTE_PARAMETERS=(
     # "--no-data"
 )
 
 DB_REMOTE_IGNORED_TABLES=(
+    "log"
 )
 
 # RSync config
 RSYNC_PARAMETERS=(
 )
 
-RSYNC_REMOTE_ROOT_PATH="/var/www/project/"
+RSYNC_REMOTE_ROOT_PATH="httpdocs/"
 
 RSYNC_REMOTE_PATHS=(
-    "" # root of remote path
+    "www" # root of remote path
 )
 
-RSYNC_EXCLUDE_PATHS=(
+RSYNC_EXCLUDE__WWW=(
     "cache/*" # all files in cache folder under root of remote path
+)
+
+RSYNC_FORCE_LOCAL__WWW=(
+    "sites/default/settings.php"
 )
 
 # Batch arrays
 
-BATCH_FULL=(
-    # "dumpdown"
-    # "syncdown"
+BATCH__FULL=(
+    "dumpdown -tf=dump"
+    "fulldrop"
+    "import -tf=dump"
+    "syncdown"
 )

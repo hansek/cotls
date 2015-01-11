@@ -1,13 +1,8 @@
-***First Alpha version - use with respect :)***
+***Not a First Alpha version - but still use with respect :)***
 
 # Condensed Tools = Cotls
 
 **Cotls** is a set of tools for (web) developers to they can easily manage their daily routines (backuping, deployment, dumping, batch commands, ...).
-
-Currently inlcudes easily configurable commands for:
-* rsync
-* mysql dump
-* mysql import
 
 You can also make groups of commands (batch) and they can be run by one command.
 
@@ -58,14 +53,18 @@ wget -qO- https://raw.githubusercontent.com/hansek/cotls/master/cotls-installer.
 cp ./cotls_completion.sh /etc/bash_completion.d/cotls
 ```
 
+
 ## Arguments
+
 #### Version
 `-v`
+
 
 #### Custom config filename suffix
 `-c=<config-suffix>`
 
 You can have more than one config files in your project directory e.g. **.cotls** (default without suffix), **.cotls.dev** (*dev* suffix), **.cotls.stage** (*stage* suffix), ...
+
 
 #### Set path to config file
 `-cp=<path-to-config-file>`
@@ -74,10 +73,133 @@ Path can be relative or absolute, default value is current directory.
 
 Allow to call Cotls outside of folder with config file
 
+
 #### CLI password prompt for remote DB
 `-prdb`
 
 Prompt user for remote database password to it havn't to be stored inside config file
+
+
+
+## Config examples for each action
+
+### Basic configs
+
+#### dumpdown - Remote DB dump to localhost
+```
+SSH_USER="user"
+SSH_SERVER="server.example.com"
+
+# For connection to remote database you can use:
+
+# A) auto loading of DB credentials from PHP files
+PROJECT_CMS="drupal7" # drupal7 | wordpress | modx
+PROJECT_SETTINGS_FILE="httpdocs/sites/default/settings.php"
+
+# B) defining database credentials here
+DB_REMOTE_NAME="my_project"
+DB_REMOTE_USER="project_user"
+DB_REMOTE_PASS="password"
+
+DB_REMOTE_IGNORED_TABLES=(
+    "log"
+)
+
+DB_REMOTE_PARAMETERS=(
+    # "--no-data"
+)
+
+CUSTOM_TARGET_FILENAME="dump"
+```
+
+#### fulldrop - drop all tables in database on localhost
+```
+DB_LOCAL_NAME="my_project_local"
+DB_LOCAL_USER="root"
+DB_LOCAL_PASS="root"
+```
+
+
+#### import - import database dump into local database
+```
+DB_LOCAL_NAME="my_project_local"
+DB_LOCAL_USER="root"
+DB_LOCAL_PASS="root"
+
+FILE_TO_IMPORT="dump"
+```
+
+
+#### syncdown - sync local media with remote host
+```
+SSH_USER="user"
+SSH_SERVER="server.example.com"
+
+PROJECT_LOCAL_ROOT="www/"
+
+RSYNC_PARAMETERS=(
+)
+
+RSYNC_REMOTE_ROOT_PATH="httpdocs/"
+
+RSYNC_REMOTE_PATHS=(
+    "www"
+)
+
+RSYNC_EXCLUDE__WWW=(
+    "cache/*"
+)
+
+RSYNC_FORCE_LOCAL__WWW=(
+    "sites/default/settings.php"
+)
+```
+
+
+#### rechmod - re-aplly 777 on certain directories/files on localhost
+```
+PROJECT_LOCAL_ROOT="www/"
+
+CHMOD_PATHS_WRITE=(
+    "sites/default/files/"
+    "tmp/"
+)
+```
+
+
+#### deploy - reset remote GIT repository to latest commit
+```
+SSH_USER="user"
+SSH_SERVER="server.example.com"
+
+PROJECT_REMOTE_GIT_ROOT="httpdocs/"
+PROJECT_REMOTE_GIT_BRANCH="origin master"
+```
+
+
+#### batch - definition of batch commands sets
+```
+# you have to have config variables for each command set ;)
+
+BATCH__FULL=(
+    "dumpdown -tf=dump"
+    "fulldrop"
+    "import -tf=dump"
+    "syncdown"
+)
+```
+
+### Multiple / inherited configs
+*... TBD ...*
+
+
+
+## Examples
+Example commands to run in command line:
+
+```
+... TBD ...
+```
 
 
 ## TODO
@@ -110,24 +232,6 @@ Prompt user for remote database password to it havn't to be stored inside config
   - [ ] allow set update stream/branch (master/test/develop)
   - [ ] option to update not only as GIT repository
 
-## Examples
-Example commands to run in command line:
-
-```
-... TBD ...
-```
-
-## Config examples
-
-### Basic configs
-#### Rsync
-*... TBD ...*
-
-#### Remote DB dump
-*... TBD ...*
-
-### Multiple / inherited configs
-*... TBD ...*
 
 
 ## License
