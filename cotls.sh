@@ -79,6 +79,7 @@ usage() {
     echo -e "   Example: cotls import dump.sql dabatase_name database_user"
     echo -e "${VAR}fulldrop${RST} - drop all tables for selected database in local mysql"
     echo -e "${VAR}deploy${RST} - make a GIT deploy on remote server"
+    echo -e "${VAR}self-update${RST} - update COTLS it self from GIT"
 
     echo -e ""
 
