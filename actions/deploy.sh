@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ACTION_NAME="deploy"
-ACTION_VERSION="2015-01-11"
+ACTION_VERSION="2015-01-20"
 
 deploy() {
     checkSSHAccess
@@ -61,8 +61,10 @@ deploy() {
         exit 1
     fi
 
-    log "Fetching from \"${PROJECT_REMOTE_GIT_BRANCH}\""
-    ssh -A ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_REMOTE_GIT_ROOT}; git fetch ${PROJECT_REMOTE_GIT_BRANCH})"
+    local GIT_REMOTE=${PROJECT_REMOTE_GIT_BRANCH% *}
+
+    log "Fetching from \"${GIT_REMOTE}\""
+    ssh -A ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_REMOTE_GIT_ROOT}; git fetch ${GIT_REMOTE})"
 
     # TODO check if there are changes after fetch
 
