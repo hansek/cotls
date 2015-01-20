@@ -16,7 +16,7 @@
 
 COTLS_ALIAS="cotls"
 COTLS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-COTLS_VERSION="2015-01-11"
+COTLS_VERSION="2015-01-20"
 COTLS_HASH=
 
 CONFIG_SUFFIX=
@@ -296,6 +296,12 @@ callAction() {
 
 
 checkSSHAccess() {
+    # main variables validation
+    if [ -z "${SSH_USER}" ] || [ -z "${SSH_SERVER}" ]
+    then
+        loge "SSH user or server not defined, check your COTLS configuration file"
+    fi
+
     # check if ssh agent is running and has a loaded key
     ssh-add -l >/dev/null 2>&1
 
