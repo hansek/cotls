@@ -12,6 +12,8 @@ deploy() {
         loge "Not a GIT repository"
     fi
 
+    log "Using path \"${PROJECT_REMOTE_GIT_ROOT}\""
+
     log "Repository exists"
 
     IS_DIRTY=0
@@ -68,7 +70,7 @@ deploy() {
 
     # TODO check if there are changes after fetch
 
-    log "Deploying latest commits"
+    log "Deploying latest commits from \"${PROJECT_REMOTE_GIT_BRANCH/ /\/}\""
     ssh -A ${SSH_USER}@${SSH_SERVER} "(cd ${PROJECT_REMOTE_GIT_ROOT}; git reset --hard ${PROJECT_REMOTE_GIT_BRANCH/ /\/})"
 
     logs "Deployed sucessfully"
