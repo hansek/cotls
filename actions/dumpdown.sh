@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ACTION_NAME="dumpdown"
-ACTION_VERSION="2015-01-11"
+ACTION_VERSION="2015-03-04"
 
 
 modx() {
@@ -26,6 +26,13 @@ wordpress() {
     DB_REMOTE_USER=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep DB_USER | cut -d \' -f 4`
     DB_REMOTE_PASS=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep DB_PASSWORD | cut -d \' -f 4`
     DB_REMOTE_NAME=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep DB_NAME | cut -d \' -f 4`
+}
+
+
+nette() {
+    DB_REMOTE_USER=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep username: | cut -d " " -f 2 | HEAD -1`
+    DB_REMOTE_PASS=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep password: | cut -d " " -f 2 | HEAD -1`
+    DB_REMOTE_NAME=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep database: | cut -d " " -f 2 | HEAD -1`
 }
 
 

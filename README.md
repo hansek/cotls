@@ -93,7 +93,7 @@ SSH_SERVER="server.example.com"
 # For connection to remote database you can use:
 
 # A) auto loading of DB credentials from PHP files
-PROJECT_CMS="drupal7" # drupal7 | wordpress | modx
+PROJECT_CMS="drupal7" # drupal7 | wordpress | modx | nette
 PROJECT_SETTINGS_FILE="httpdocs/sites/default/settings.php"
 
 # B) defining database credentials here
