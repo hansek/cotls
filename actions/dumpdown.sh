@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ACTION_NAME="dumpdown"
-ACTION_VERSION="2015-03-04"
+ACTION_VERSION="2015-03-13"
 
 
 modx() {
@@ -33,6 +33,13 @@ nette() {
     DB_REMOTE_USER=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep username: | cut -d " " -f 2 | HEAD -1`
     DB_REMOTE_PASS=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep password: | cut -d " " -f 2 | HEAD -1`
     DB_REMOTE_NAME=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep database: | cut -d " " -f 2 | HEAD -1`
+}
+
+
+prestashop() {
+    DB_REMOTE_USER=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep "_DB_USER_" | cut -d "," -f 2 | cut -d \' -f 2`
+    DB_REMOTE_PASS=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep "_DB_PASSWD_" | cut -d "," -f 2 | cut -d \' -f 2`
+    DB_REMOTE_NAME=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep "_DB_NAME_" | cut -d "," -f 2 | cut -d \' -f 2`
 }
 
 
