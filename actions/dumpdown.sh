@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ACTION_NAME="dumpdown"
-ACTION_VERSION="2015-03-13"
+ACTION_VERSION="2015-05-15"
 
 
 modx() {
@@ -112,6 +112,14 @@ dumpdown() {
         TARGET_FILENAME="${TARGET_FILENAME}.sql.gz"
     fi
 
+    # check if directory exists
+    DIRECTORY=$(dirname "${TARGET_FILENAME}")
+
+    if [ ! -d "$DIRECTORY" ]; then
+        mkdir "$DIRECTORY"
+    fi
+
+    # dump
     log "Dumping database \"${DB_REMOTE_NAME}\""
     ssh ${SSH_USER}@${SSH_SERVER} "mysqldump -u ${DB_REMOTE_USER} -p${DB_REMOTE_PASS} ${DB_REMOTE_IGNORED_TABLES[@]} ${DB_REMOTE_PARAMETERS[@]} ${DB_REMOTE_NAME} | gzip -c" > ${TARGET_FILENAME}
 

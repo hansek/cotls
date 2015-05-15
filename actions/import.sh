@@ -6,6 +6,12 @@ ACTION_VERSION="2015-01-11"
 import() {
     PASWORD=""
 
+    # check if file exists
+
+    if [ ! -f "$FILE_TO_IMPORT" ]; then
+        loge "File \"${FILE_TO_IMPORT}\" not exists!"
+    fi
+
     if [ ! -z "${DB_LOCAL_PASS+x}" ] && [ ! -z "${DB_LOCAL_PASS}" ]
     then
         PASSWORD="-p${DB_LOCAL_PASS}"
