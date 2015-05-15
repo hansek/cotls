@@ -251,7 +251,7 @@ prepareAction() {
 
 
         import)
-            if [[ $ARGUMENTS_COUNT != 2 ]]; then
+            if [[ $ARGUMENTS_COUNT < 2 ]]; then
                 loge "File to import not specified!"
             fi
 
