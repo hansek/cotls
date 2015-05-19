@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ACTION_NAME="dumpdown"
-ACTION_VERSION="2015-05-15"
+ACTION_VERSION="2015-05-19"
 
 
 modx() {
@@ -40,6 +40,13 @@ prestashop() {
     DB_REMOTE_USER=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep "_DB_USER_" | cut -d "," -f 2 | cut -d \' -f 2`
     DB_REMOTE_PASS=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep "_DB_PASSWD_" | cut -d "," -f 2 | cut -d \' -f 2`
     DB_REMOTE_NAME=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep "_DB_NAME_" | cut -d "," -f 2 | cut -d \' -f 2`
+}
+
+
+radek() {
+    DB_REMOTE_USER=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep \\$user_name | cut -d "\"" -f 2`
+    DB_REMOTE_PASS=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep \\$password | cut -d "\"" -f 2`
+    DB_REMOTE_NAME=`ssh ${SSH_USER}@${SSH_SERVER} cat ${PROJECT_SETTINGS_FILE} | grep \\$db_name | cut -d "\"" -f 2`
 }
 
 

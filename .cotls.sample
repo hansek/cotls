@@ -5,7 +5,7 @@ SSH_USER="user"
 SSH_SERVER="server.example.com"
 
 # Project CMS/FW info
-PROJECT_CMS="drupal7" # drupal7 | wordpress | modx | nette | prestashop
+PROJECT_CMS="drupal7" # drupal7 | wordpress | modx | nette | prestashop | radek
 PROJECT_SETTINGS_FILE="sites/default/settings.php"
 PROJECT_LOCAL_ROOT="www/" # path to local project directory
 
