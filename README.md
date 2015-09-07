@@ -7,6 +7,9 @@
 You can also make groups of commands (batch) and they can be run by one command.
 
 ## Install
+
+Minimum requirement is **BASH 4.x**
+
 ### Automatic install with cURL or Wget
 Run in your command line
 
