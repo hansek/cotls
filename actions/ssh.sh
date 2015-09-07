@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ACTION_NAME="ssh"
 ACTION_VERSION="2014-12-24"

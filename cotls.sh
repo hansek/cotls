@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Copyright (c) 2014 Jan Tezner under the MIT license
 
 # Condensed Tools for (Web) Developers
@@ -16,7 +16,7 @@
 
 COTLS_ALIAS="cotls"
 COTLS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-COTLS_VERSION="2015-05-19"
+COTLS_VERSION="2015-09-07"
 COTLS_HASH=
 
 CONFIG_SUFFIX=

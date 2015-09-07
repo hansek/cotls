@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ACTION_NAME="dumpdown"
 ACTION_VERSION="2015-05-19"

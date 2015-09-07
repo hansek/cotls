@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ACTION_NAME="fulldrop"
 ACTION_VERSION="2015-01-11"
