@@ -1,4 +1,4 @@
-***Not a First Alpha version - but still use with respect :)***
+***Something like beta version - use with respect :)***
 
 # Condensed Tools = Cotls
 
